@@ -5,10 +5,13 @@ class AppStart extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      routes: AppRoutes.routes,
-      initialRoute: AppRoutes.initRoute,
+    return ScreenUtilInit(
+      designSize: const Size(360, 690),
+      builder: (context, child) => MaterialApp(
+        debugShowCheckedModeBanner: false,
+        routes: AppRoutes.routes,
+        initialRoute: AppRoutes.initRoute,
+      ),
     );
   }
 }

@@ -1,9 +1,8 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
 part of '../../utils/import/app_import.dart';
 
-class HomePage extends StatelessWidget {
-  static const String nameRoute = "HomePage";
-  const HomePage({super.key});
+class EditIn extends StatelessWidget {
+  static const String nameRoute = "EditIn";
+  const EditIn({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -21,8 +20,8 @@ class HomePage extends StatelessWidget {
             itemCount: 2,
             itemBuilder: (BuildContext context, int index) {
               return CustomCard(
-                icon: homeIcons.elementAt(index),
-                title: homeCardName.elementAt(index),
+                icon: editInIcons.elementAt(index),
+                title: editInCardName.elementAt(index),
               );
             },
           ),
