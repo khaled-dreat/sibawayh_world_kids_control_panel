@@ -13,8 +13,10 @@ class _EditingWordState extends State<EditingWord> {
   String? fileName;
   PlatformFile? pickedfile;
   bool isLoding = false;
-  File? fileToDisplay;
+  File? imageToDisplay;
+  File? audioToPlay;
 
+  /// *******************************************
   Future<void> pickFile({required FileType fileType}) async {
     try {
       setState(() {
@@ -25,20 +27,26 @@ class _EditingWordState extends State<EditingWord> {
       if (result != null) {
         fileName = result!.files.first.name;
         pickedfile = result!.files.first;
-        fileToDisplay = File(pickedfile!.path.toString());
-
-        dev.log("File Name $fileToDisplay");
+        if (fileType == FileType.image) {
+          imageToDisplay = File(pickedfile!.path.toString());
+        } else {
+          audioToPlay = File(pickedfile!.path.toString());
+        }
+        // dev.log("File Name $imageToDisplay");
       }
       setState(() {
         isLoding = false;
       });
     } catch (e) {
-      dev.log("Peicer Error $e");
+      dev.log("Peicker Error $e");
     }
   }
 
   @override
   Widget build(BuildContext context) {
+    ControllerEducationalMaterialsManager pEducMaterial =
+        Provider.of<ControllerEducationalMaterialsManager>(context);
+
     return Scaffold(
       body: Container(
           width: MediaQuery.sizeOf(context).width,
@@ -75,7 +83,7 @@ class _EditingWordState extends State<EditingWord> {
                         Center(
                           child: pickedfile != null
                               ? Image.file(
-                                  fileToDisplay!,
+                                  imageToDisplay!,
                                   fit: BoxFit.fill,
                                   width: 200.w,
                                   height: 350.h,
@@ -100,12 +108,17 @@ class _EditingWordState extends State<EditingWord> {
                   SizedBox(
                       height: 70.h,
                       width: 170.w,
-                      child: Card(
-                        child: Column(
-                          children: [
-                            SvgPicture.asset(AppIcons.addSound, height: 35.h),
-                            Text("تحميل صوت")
-                          ],
+                      child: InkWell(
+                        onTap: () {
+                          pickFile(fileType: FileType.audio);
+                        },
+                        child: Card(
+                          child: Column(
+                            children: [
+                              SvgPicture.asset(AppIcons.addSound, height: 35.h),
+                              Text("تحميل صوت")
+                            ],
+                          ),
                         ),
                       )),
                   SizedBox(
@@ -137,7 +150,14 @@ class _EditingWordState extends State<EditingWord> {
                     icon: AppIcons.accept,
                     colors: Colors.green,
                     title: "حفظ",
-                    onTap: () {},
+                    onTap: () {
+                      dev.log(pickedfile!.path.toString());
+                      pEducMaterial.addEducationalMaterials(
+                          audio: audioToPlay!,
+                          image: imageToDisplay!,
+                          cardType: CardEnum.word.name,
+                          wrorsEnum: WrorsEnum.b.nameWords);
+                    },
                   ),
                 ],
               )

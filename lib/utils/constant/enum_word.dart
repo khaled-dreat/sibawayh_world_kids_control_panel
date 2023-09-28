@@ -31,3 +31,12 @@ enum WrorsEnum {
   final String nameWords;
   const WrorsEnum(this.nameWords);
 }
+
+enum CardEnum {
+  word("word"),
+  letter("letter"),
+  sentence("sentence");
+
+  final String name;
+  const CardEnum(this.name);
+}
