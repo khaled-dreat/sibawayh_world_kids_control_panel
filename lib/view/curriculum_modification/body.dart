@@ -11,26 +11,33 @@ class CurriculumModification extends StatelessWidget {
       appBar: AppBar(),
       body: Padding(
         padding: EdgeInsets.only(top: 50.r),
-        child: Container(
-          child: GridView.builder(
-            padding: EdgeInsets.symmetric(horizontal: 10.r),
-            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: 2,
-              mainAxisSpacing: 10, // vertical
-              crossAxisSpacing: 20, // horizontal
-            ),
-            itemCount: 3,
-            itemBuilder: (BuildContext context, int index) {
-              return SizedBox(
-                height: 50,
-                width: 50,
-                child: CustomCard(
-                  icon: iconsCurrModifi.elementAt(index),
-                  title: cardNameCurrModifi.elementAt(index),
-                ),
-              );
-            },
-          ),
+        child: Column(
+          children: [
+            Row(mainAxisAlignment: MainAxisAlignment.spaceAround, children: [
+              CustomCard(
+                onTap: () {
+                  AppRoutes.go(context, EditWords.nameRoute);
+                },
+                icon: AppIcons.editWords,
+                title: "تعديل على الحروف",
+              ),
+              CustomCard(
+                icon: AppIcons.editLetters,
+                title: "تعديل على الكلمات",
+              ),
+            ]),
+            20.verticalSpace,
+            Row(mainAxisAlignment: MainAxisAlignment.spaceAround, children: [
+              CustomCard(
+                icon: AppIcons.editSentence,
+                title: "تعديل على الجمال",
+              ),
+              SizedBox(
+                height: 150.h,
+                width: 150.w,
+              ),
+            ]),
+          ],
         ),
       ),
     );

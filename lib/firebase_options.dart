@@ -47,29 +47,29 @@ class DefaultFirebaseOptions {
   }
 
   static const FirebaseOptions web = FirebaseOptions(
-    apiKey: 'AIzaSyBWViWWv_h1Rtd4uYtvVbB6rcR99LDhaKg',
-    appId: '1:1001634176109:web:d81a46a058aa272f2ef364',
-    messagingSenderId: '1001634176109',
-    projectId: 'mervat-app',
-    authDomain: 'mervat-app.firebaseapp.com',
-    storageBucket: 'mervat-app.appspot.com',
-    measurementId: 'G-8RJNQ1XGTF',
+    apiKey: 'AIzaSyBDjQGywkv0c2vl9_D7p6mYlTlVzAU4bBo',
+    appId: '1:93441299141:web:5f9c880dc3720e6fa2d6ac',
+    messagingSenderId: '93441299141',
+    projectId: 'test-61e36',
+    authDomain: 'test-61e36.firebaseapp.com',
+    storageBucket: 'test-61e36.appspot.com',
+    measurementId: 'G-0QBM1DEN1T',
   );
 
   static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyD1LZNqORGRIj7Fo0oKHSRbyGwqZeqQJy0',
-    appId: '1:1001634176109:android:5ed62476ff86b7272ef364',
-    messagingSenderId: '1001634176109',
-    projectId: 'mervat-app',
-    storageBucket: 'mervat-app.appspot.com',
+    apiKey: 'AIzaSyDqrSBinAklLtX1UivmPJx6D6bAZJiWUJg',
+    appId: '1:93441299141:android:fb8aa2529429850aa2d6ac',
+    messagingSenderId: '93441299141',
+    projectId: 'test-61e36',
+    storageBucket: 'test-61e36.appspot.com',
   );
 
   static const FirebaseOptions ios = FirebaseOptions(
-    apiKey: 'AIzaSyA5BAfbOK9xq3BnZ9Sdrzn-3UG834Zwxm0',
-    appId: '1:1001634176109:ios:f637972794e721112ef364',
-    messagingSenderId: '1001634176109',
-    projectId: 'mervat-app',
-    storageBucket: 'mervat-app.appspot.com',
+    apiKey: 'AIzaSyD4yW8zRW5DrGfM6C2WTXcwtnI2oGmwun8',
+    appId: '1:93441299141:ios:d447602672362590a2d6ac',
+    messagingSenderId: '93441299141',
+    projectId: 'test-61e36',
+    storageBucket: 'test-61e36.appspot.com',
     iosBundleId: 'com.example.sibawayhWorldKids',
   );
 }

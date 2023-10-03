@@ -9,6 +9,13 @@ class AppStart extends StatelessWidget {
       designSize: const Size(360, 690),
       builder: (context, child) => MaterialApp(
         debugShowCheckedModeBanner: false,
+        // * Language
+
+        localizationsDelegates: context.localizationDelegates,
+        supportedLocales: context.supportedLocales,
+        locale: context.locale,
+        // * Route
+
         routes: AppRoutes.routes,
         initialRoute: AppRoutes.initRoute,
       ),

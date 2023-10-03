@@ -1,4 +1,3 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
 part of '../../utils/import/app_import.dart';
 
 class HomePage extends StatelessWidget {
@@ -11,22 +10,19 @@ class HomePage extends StatelessWidget {
       appBar: AppBar(),
       body: Padding(
         padding: EdgeInsets.only(top: 50.r),
-        child: Container(
-          child: GridView.builder(
-            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: 2,
-              mainAxisSpacing: 2, // vertical
-              crossAxisSpacing: 10, // horizontal
-            ),
-            itemCount: 2,
-            itemBuilder: (BuildContext context, int index) {
-              return CustomCard(
-                icon: homeIcons.elementAt(index),
-                title: homeCardName.elementAt(index),
-              );
+        child: Row(mainAxisAlignment: MainAxisAlignment.spaceAround, children: [
+          CustomCard(
+            onTap: () {
+              AppRoutes.go(context, EditIn.nameRoute);
             },
+            icon: AppIcons.curriculumModification,
+            title: "تعديل على المنهج الدراسي",
           ),
-        ),
+          CustomCard(
+            icon: AppIcons.technicalSupport,
+            title: "الدعم الفني",
+          ),
+        ]),
       ),
     );
   }

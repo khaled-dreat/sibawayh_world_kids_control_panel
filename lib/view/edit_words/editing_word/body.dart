@@ -1,22 +1,49 @@
-part of '../../utils/import/app_import.dart';
+part of '../../../utils/import/app_import.dart';
 
 class EditingWord extends StatefulWidget {
   static const String nameRoute = "EditingWord";
-  const EditingWord({super.key});
+  final bool isEditing;
+  final String? id;
+  final String educType;
+  final String lang;
+  final String exampleType;
+  const EditingWord({
+    Key? key,
+    this.isEditing = true,
+    this.id,
+    required this.educType,
+    required this.lang,
+    required this.exampleType,
+  }) : super(key: key);
 
   @override
   State<EditingWord> createState() => _EditingWordState();
 }
 
 class _EditingWordState extends State<EditingWord> {
+  @override
+  void initState() {
+    super.initState();
+    if (widget.isEditing) {
+      ControllerEducationalMaterialsManager pEducMaterial =
+          Provider.of<ControllerEducationalMaterialsManager>(context,
+              listen: false);
+      pEducMaterial.getEducationalMaterials(
+          id: widget.id!,
+          educType: widget.educType,
+          lang: widget.lang,
+          exampleType: widget.exampleType);
+    }
+  }
+
   FilePickerResult? result;
   String? fileName;
   PlatformFile? pickedfile;
   bool isLoding = false;
   File? imageToDisplay;
   File? audioToPlay;
+  bool isUplodeAudio = false;
 
-  /// *******************************************
   Future<void> pickFile({required FileType fileType}) async {
     try {
       setState(() {
@@ -31,8 +58,8 @@ class _EditingWordState extends State<EditingWord> {
           imageToDisplay = File(pickedfile!.path.toString());
         } else {
           audioToPlay = File(pickedfile!.path.toString());
+          isUplodeAudio = true;
         }
-        // dev.log("File Name $imageToDisplay");
       }
       setState(() {
         isLoding = false;
@@ -46,6 +73,7 @@ class _EditingWordState extends State<EditingWord> {
   Widget build(BuildContext context) {
     ControllerEducationalMaterialsManager pEducMaterial =
         Provider.of<ControllerEducationalMaterialsManager>(context);
+    AudioPlayer player = AudioPlayer();
 
     return Scaffold(
       body: Container(
@@ -61,7 +89,9 @@ class _EditingWordState extends State<EditingWord> {
                 child: SizedBox(
                   width: 300.w,
                   child: CustomTextField(
-                      hintText: "أكتب ما تريد ان يظهر للمستخدم"),
+                      hintText: widget.isEditing
+                          ? ""
+                          : "أكتب ما تريد ان يظهر للمستخدم"),
                 ),
               ),
               20.verticalSpace,
@@ -72,7 +102,7 @@ class _EditingWordState extends State<EditingWord> {
                 },
                 child: Container(
                     width: 200.w,
-                    height: 368.h,
+                    height: 340.h,
                     clipBehavior: Clip.antiAlias,
                     decoration: BoxDecoration(
                         border: Border.all(),
@@ -81,27 +111,39 @@ class _EditingWordState extends State<EditingWord> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Center(
-                          child: pickedfile != null
-                              ? Image.file(
-                                  imageToDisplay!,
-                                  fit: BoxFit.fill,
-                                  width: 200.w,
-                                  height: 350.h,
-                                )
+                          child: widget.isEditing
+                              ? pEducMaterial.imgLoading
+                                  ? Image.network(
+                                      pEducMaterial.education!.image,
+                                      fit: BoxFit.fill,
+                                      width: 200.w,
+                                      height: 350.h,
+                                    )
+                                  : AppLoading(
+                                      loading: TypeLoading.image,
+                                    )
                               : pickedfile != null
-                                  ? null
-                                  : SizedBox(
-                                      height: 70.h,
-                                      child: SvgPicture.asset(
-                                        AppIcons.addImag,
-                                      ),
-                                    ),
+                                  ? Image.file(
+                                      imageToDisplay!,
+                                      fit: BoxFit.fill,
+                                      width: 200.w,
+                                      height: 350.h,
+                                    )
+                                  : pickedfile != null
+                                      ? null
+                                      : SizedBox(
+                                          height: 70.h,
+                                          child: SvgPicture.asset(
+                                            AppIcons.addImag,
+                                          ),
+                                        ),
                         ),
                       ],
                     )),
               ),
               20.verticalSpace,
-              // add Aoudio and play it
+              // * add Audio and play it
+              // add Audio
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
@@ -121,16 +163,31 @@ class _EditingWordState extends State<EditingWord> {
                           ),
                         ),
                       )),
+                  // play Audio
                   SizedBox(
                       height: 70.h,
                       width: 170.w,
-                      child: Card(
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            SvgPicture.asset(AppIcons.playSound, height: 35.h),
-                            Text("تشغيل الصوت")
-                          ],
+                      child: InkWell(
+                        onTap: () {
+                          if (widget.isEditing) {
+                            player.setUrl(pEducMaterial.education!.audio);
+                            player.play();
+                          } else {
+                            if (!isUplodeAudio) {
+                              AppToast.toast(
+                                  "الرجاء تحميل صوت للمادة التعليمية");
+                            }
+                          }
+                        },
+                        child: Card(
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              SvgPicture.asset(AppIcons.playSound,
+                                  height: 35.h),
+                              Text("تشغيل الصوت")
+                            ],
+                          ),
                         ),
                       ))
                 ],
@@ -151,12 +208,15 @@ class _EditingWordState extends State<EditingWord> {
                     colors: Colors.green,
                     title: "حفظ",
                     onTap: () {
-                      dev.log(pickedfile!.path.toString());
                       pEducMaterial.addEducationalMaterials(
+                          title: ARWordsEnum.a.nameWords,
                           audio: audioToPlay!,
                           image: imageToDisplay!,
-                          cardType: CardEnum.word.name,
-                          wrorsEnum: WrorsEnum.b.nameWords);
+                          cardType: widget.exampleType,
+                          woedsEnum: ARWordsEnum.b.nameWords,
+                          educType: widget.educType,
+                          exampleType: widget.exampleType,
+                          lang: widget.lang);
                     },
                   ),
                 ],

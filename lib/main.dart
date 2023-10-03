@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:provider/single_child_widget.dart';
@@ -9,15 +10,22 @@ import 'firebase_options.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  WidgetsFlutterBinding.ensureInitialized();
 
+  await EasyLocalization.ensureInitialized();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
-  runApp(MultiProvider(providers: providers, child: const AppStart()));
+  runApp(EasyLocalization(
+      supportedLocales: AppLangConfig.supportLocale,
+      path: AppLangConfig.path,
+      fallbackLocale: AppLangConfig.enLocale,
+      child: MultiProvider(providers: providers, child: const AppStart())));
 }
 
 List<SingleChildWidget> providers = [
   ChangeNotifierProvider(create: (_) => ContollerPicker()),
+  ChangeNotifierProvider(create: (_) => ControllerAuth()),
   ChangeNotifierProvider(
       create: (_) => ControllerEducationalMaterialsManager()),
 ];

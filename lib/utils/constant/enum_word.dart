@@ -1,4 +1,4 @@
-enum WrorsEnum {
+enum ARWordsEnum {
   a("أ"),
   b("ب"),
   t("ت"),
@@ -29,7 +29,7 @@ enum WrorsEnum {
   y("");
 
   final String nameWords;
-  const WrorsEnum(this.nameWords);
+  const ARWordsEnum(this.nameWords);
 }
 
 enum CardEnum {

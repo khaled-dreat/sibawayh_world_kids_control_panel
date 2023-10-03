@@ -1,26 +1,36 @@
 {
   "project_info": {
-    "project_number": "1001634176109",
-    "project_id": "mervat-app",
-    "storage_bucket": "mervat-app.appspot.com"
+    "project_number": "93441299141",
+    "project_id": "test-61e36",
+    "storage_bucket": "test-61e36.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:1001634176109:android:5ed62476ff86b7272ef364",
+        "mobilesdk_app_id": "1:93441299141:android:fb8aa2529429850aa2d6ac",
         "android_client_info": {
           "package_name": "com.example.sibawayh_world_kids"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "93441299141-c4o64256fnd7knvadokl26hgaudclplm.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
-          "current_key": "AIzaSyD1LZNqORGRIj7Fo0oKHSRbyGwqZeqQJy0"
+          "current_key": "AIzaSyDqrSBinAklLtX1UivmPJx6D6bAZJiWUJg"
         }
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "93441299141-c4o64256fnd7knvadokl26hgaudclplm.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
         }
       }
     }

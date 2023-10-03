@@ -5,27 +5,29 @@ class ListViwBuildEditWords extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    ControllerEducationalMaterialsManager pEducMaterial =
+        Provider.of<ControllerEducationalMaterialsManager>(
+      context,
+    );
+    final List<ModelEducation> data = pEducMaterial.allWords;
+
     return ListView.builder(
       padding: EdgeInsets.symmetric(vertical: 20.r),
-      itemCount: 20,
+      itemCount: data.length,
       itemBuilder: (BuildContext context, int index) {
-        return Container(
-          margin: EdgeInsets.symmetric(vertical: 7.r),
-          height: 65.h,
-          child: Card(
-            elevation: 5,
-            child: Center(
-              child: ListTile(
-                  title: Padding(
-                    padding: EdgeInsets.all(8.0.r),
-                    child: const Text("ألف"),
-                  ),
-                  trailing: Icon(
-                    Icons.chevron_right,
-                    size: 40.r,
-                  )),
-            ),
-          ),
+        return EducMaterialCard(
+          data: data.elementAt(index),
+          onTap: () {
+            AppRoutes.goMaterial(
+                context,
+                EditingWord(
+                  isEditing: true,
+                  id: data.elementAt(index).id,
+                  educType: EducTypeEnum.reading.title,
+                  exampleType: EducExamTypeEnum.word.title,
+                  lang: EducLangEnum.ar.title,
+                ));
+          },
         );
       },
     );

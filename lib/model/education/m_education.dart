@@ -1,4 +1,4 @@
-part of '../utils/import/app_import.dart';
+part of '../../utils/import/app_import.dart';
 
 class ModelEducation {
   final String id;
@@ -10,6 +10,10 @@ class ModelEducation {
   final bool active;
   final DateTime timeSend;
   final String userId;
+  final String educType;
+  final String lang;
+  final String exampleType;
+
   ModelEducation({
     required this.id,
     required this.title,
@@ -20,6 +24,9 @@ class ModelEducation {
     required this.active,
     required this.timeSend,
     required this.userId,
+    required this.educType,
+    required this.lang,
+    required this.exampleType,
   });
 
   Map<String, dynamic> toMap() {
@@ -33,6 +40,9 @@ class ModelEducation {
       'active': active,
       'timeSend': timeSend.millisecondsSinceEpoch,
       'userId': userId,
+      'educType': educType,
+      'lang': lang,
+      'exampleType': exampleType,
     };
   }
 
@@ -47,6 +57,9 @@ class ModelEducation {
       active: map['active'] as bool,
       timeSend: DateTime.fromMillisecondsSinceEpoch(map['timeSend'] as int),
       userId: map['userId'] as String,
+      educType: map['educType'] as String,
+      lang: map['lang'] as String,
+      exampleType: map['exampleType'] as String,
     );
   }
 
