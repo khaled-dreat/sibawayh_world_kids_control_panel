@@ -1,18 +1,18 @@
 import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
-
+import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:easy_localization/easy_localization.dart' as loc;
 import 'package:file_picker/file_picker.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -22,6 +22,8 @@ import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sibawayh_world_kids/utils/constant/app_images.dart';
 import 'package:sibawayh_world_kids/utils/constant/enum_word.dart';
+import 'package:top_snackbar_flutter/custom_snack_bar.dart';
+import 'package:top_snackbar_flutter/top_snack_bar.dart';
 import 'package:uuid/uuid.dart';
 import '../constant/app_icons.dart';
 import 'package:just_audio/just_audio.dart';
@@ -45,6 +47,7 @@ part '../../view/auth/register.dart';
 part '../../view/splash/body.dart';
 part '../../view/selected_lang/body.dart';
 part '../../view/auth/wrapper.dart';
+part '../../view/edit_words/add_word/body.dart';
 
 // ? **************** Utils ***********************
 part '../routes/app_routes.dart';
@@ -64,7 +67,6 @@ part '../constant/app_firebase_key.dart';
 
 //  **************** Wdgets ***********************
 part '../../view/widgets/card/custom_card.dart';
-part '../../view/edit_words/widgets/list_view_builder/list_viw_build_edit_words.dart';
 part '../../view/widgets/buttons/custom_btn.dart';
 part '../../view/widgets/tost/app_toast.dart';
 part '../../view/auth/widgets/auth_app_bar.dart';
@@ -79,11 +81,26 @@ part '../../view/edit_words/widgets/text_field/custom_text_field.dart';
 part '../../view/widgets/appbars/custom_app.bar_srh.dart';
 part '../../view/widgets/float_action_btn/cus_float_action_btn.dart';
 part '../../view/widgets/educ_material_card/educ_material_card.dart';
+part '../../view/widgets/dropdown/dropdown.dart';
+part "../../view/widgets/snackbar/app_snackbar.dart";
+part '../../view/widgets/dialog/app_dialog.dart';
+part '../../view/edit_words/widgets/txt_title/txt_title.dart';
+part '../../view/edit_words/editing_word/widgets/edit_img.dart';
+part '../../view/edit_words/editing_word/widgets/btn_cancel_accept.dart';
+part '../../view/edit_words/widgets/choose_en_ar/choose_en_ar.dart';
+part '../../view/edit_words/ar/tab_ar.dart';
+part '../../view/edit_words/ar/ar_list_viw.dart';
+part '../../view/edit_words/en/en_list_viw.dart';
+part '../../view/edit_words/en/tab_en.dart';
 
 // ? **************** Controller ***********************
 part '../../controller/c_pick.dart';
-part '../../controller/c_editing.dart';
+part '../../controller/education/c_editing.dart';
 part '../../controller/c_auth.dart';
+part '../../controller/education/c_add.dart';
+part '../../controller/education/c_get_education.dart';
+part '../../controller/education/c_education_method.dart';
+
 // * **************** Services ***********************
 part '../../services/app_storeg_to_fire.dart';
 

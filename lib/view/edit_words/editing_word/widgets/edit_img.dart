@@ -1,0 +1,48 @@
+part of '../../../../utils/import/app_import.dart';
+
+class EditImg extends StatelessWidget {
+  const EditImg({
+    super.key,
+    required this.isUplodeimage,
+    required this.imageToDisplay,
+    required this.pEducMaterial,
+  });
+
+  final bool isUplodeimage;
+  final File? imageToDisplay;
+  final ControllerEducationData pEducMaterial;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+        width: 260.w,
+        height: 351.h,
+        clipBehavior: Clip.antiAlias,
+        decoration: BoxDecoration(
+            border: Border.all(),
+            borderRadius: BorderRadius.all(Radius.circular(20.r))),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Center(
+                child: isUplodeimage
+                    ? Image.file(
+                        imageToDisplay!,
+                        fit: BoxFit.fill,
+                        width: 260.w,
+                        height: 349.4.h,
+                      )
+                    : pEducMaterial.imgLoading
+                        ? Image.network(
+                            pEducMaterial.education!.image,
+                            fit: BoxFit.fill,
+                            width: 260.w,
+                            height: 349.4.h,
+                          )
+                        : const AppLoading(
+                            loading: TypeLoading.image,
+                          )),
+          ],
+        ));
+  }
+}

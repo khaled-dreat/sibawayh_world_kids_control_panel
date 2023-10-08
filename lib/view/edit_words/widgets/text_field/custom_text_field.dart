@@ -10,6 +10,8 @@ class CustomTextField extends StatefulWidget {
   final bool isPass;
   final void Function(String?)? onSaved;
   final void Function(String)? onChanged;
+  final TextEditingController? controller;
+  final FocusNode? focusNode;
 
   const CustomTextField(
       {super.key,
@@ -21,7 +23,9 @@ class CustomTextField extends StatefulWidget {
       this.onSaved,
       this.isPass = false,
       this.validator,
-      this.onChanged});
+      this.onChanged,
+      this.controller,
+      this.focusNode});
 
   @override
   State<CustomTextField> createState() => _CustomTextFieldState();
@@ -31,11 +35,13 @@ class _CustomTextFieldState extends State<CustomTextField> {
   @override
   Widget build(BuildContext context) {
     return TextFormField(
+        controller: widget.controller,
         keyboardType: widget.keyboardType,
         validator: widget.validator,
         onSaved: widget.onSaved,
         onChanged: widget.onChanged,
         obscureText: widget.isPass,
+        focusNode: widget.focusNode,
         obscuringCharacter: '✵',
         textCapitalization: TextCapitalization.none,
         decoration: InputDecoration(

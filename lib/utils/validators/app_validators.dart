@@ -7,6 +7,7 @@ class AppValidators {
       ".يرجى كتابة عنوان بريد إلكتروني بالطريقة الصحيحة";
   static const String messageCorrectPass =
       ".كلمة مرور لا تقل عن ٦ أحرف ولا تزيد عن ١٢";
+  static const String messageTitleEduc = "الرجاء أدخل وصف المقرر";
   static const String messageConfirmPass =
       "كلمة المرور وتأكيد كلمة المرور غير متطابقين.";
 
@@ -19,6 +20,9 @@ class AppValidators {
   static String? checkConfirmPass(String? value, String? pass) =>
       templateValidator(
           value, !validators.equals(value?.trim(), pass), messageConfirmPass);
+
+  static String? checkTitleEducation(String? value) => templateValidator(
+      value, !validators.isLength(value ?? '', 0), messageTitleEduc);
 
   // * validator
   static String? templateValidator(

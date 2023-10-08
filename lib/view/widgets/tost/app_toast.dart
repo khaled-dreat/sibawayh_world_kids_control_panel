@@ -8,7 +8,7 @@ class AppToast {
       gravity: ToastGravity.BOTTOM,
       backgroundColor: color,
       textColor: Colors.white,
-      fontSize: 64.sp,
+      fontSize: 20.sp,
     );
   }
 }

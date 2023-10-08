@@ -1,35 +1,31 @@
 part of '../../../utils/import/app_import.dart';
 
-class EditingWord extends StatefulWidget {
-  static const String nameRoute = "EditingWord";
-  final String? id;
+class AddWord extends StatefulWidget {
+  static const String nameRoute = "AddWord";
   final String educType;
   final String exampleType;
-  final String educLang;
-  const EditingWord({
+  const AddWord({
     Key? key,
-    this.id,
     required this.educType,
     required this.exampleType,
-    required this.educLang,
   }) : super(key: key);
 
   @override
-  State<EditingWord> createState() => _EditingWordState();
+  State<AddWord> createState() => _AddWordState();
 }
 
-class _EditingWordState extends State<EditingWord> {
+class _AddWordState extends State<AddWord> {
+  TextEditingController txtTitleController = TextEditingController();
+  FocusNode txtTitleFocusNode = FocusNode();
+
   FilePickerResult? result;
   String? fileName;
   PlatformFile? pickedfile;
   File? imageToDisplay;
   File? audioToPlay;
   bool isUplodeAudio = false;
-  bool isUplodeimage = false;
+  bool isUplodeImage = false;
   bool isSave = false;
-
-  TextEditingController txtTitleController = TextEditingController();
-  FocusNode txtTitleFocusNode = FocusNode();
 
   Future<void> pickFile({required FileType fileType}) async {
     try {
@@ -40,30 +36,16 @@ class _EditingWordState extends State<EditingWord> {
         pickedfile = result!.files.first;
         if (fileType == FileType.image) {
           imageToDisplay = File(pickedfile!.path.toString());
-          isUplodeimage = true;
+          isUplodeImage = true;
         } else {
           audioToPlay = File(pickedfile!.path.toString());
           isUplodeAudio = true;
         }
+        setState(() {});
       }
-      setState(() {});
     } catch (e) {
       dev.log("Peicker Error $e");
     }
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    Future.delayed(Duration.zero, () {
-      ControllerEducationData pEducMaterial =
-          Provider.of<ControllerEducationData>(context, listen: false);
-      pEducMaterial.changeEducaLang(widget.educLang);
-      pEducMaterial.getEducationalMaterialByID(
-          id: widget.id!,
-          educType: widget.educType,
-          exampleType: widget.exampleType);
-    });
   }
 
   @override
@@ -76,11 +58,8 @@ class _EditingWordState extends State<EditingWord> {
   Widget build(BuildContext context) {
     ControllerEducationData pEducMaterial =
         Provider.of<ControllerEducationData>(context);
-
     AudioPlayer player = AudioPlayer();
-    txtTitleController.text = pEducMaterial.title;
 
-    // ToDo : Refactor Wdgets
     return Scaffold(
       body: SingleChildScrollView(
         child: Container(
@@ -100,18 +79,43 @@ class _EditingWordState extends State<EditingWord> {
                   onTap: () {
                     pickFile(fileType: FileType.image);
                   },
-                  child: EditImg(
-                      isUplodeimage: isUplodeimage,
-                      imageToDisplay: imageToDisplay,
-                      pEducMaterial: pEducMaterial),
+                  child: Container(
+                      width: 260.w,
+                      height: 351.h,
+                      clipBehavior: Clip.antiAlias,
+                      decoration: BoxDecoration(
+                          border: Border.all(),
+                          borderRadius:
+                              BorderRadius.all(Radius.circular(20.r))),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Center(
+                            child: isUplodeImage
+                                ? Image.file(
+                                    imageToDisplay!,
+                                    fit: BoxFit.fill,
+                                    width: 260.w,
+                                    height: 349.4.h,
+                                  )
+                                : SizedBox(
+                                    height: 70.h,
+                                    child: SvgPicture.asset(
+                                      AppIcons.addImag,
+                                    ),
+                                  ),
+                          ),
+                        ],
+                      )),
                 ),
+
                 20.verticalSpace,
                 // * Add, Play Audio and  DropDownSelectLang
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
                     //  DropDown Select Lang
-                    DropDownSelectLang(),
+                    const DropDownSelectLang(),
                     Container(
                         height: 130.h,
                         width: 2.w,
@@ -133,7 +137,7 @@ class _EditingWordState extends State<EditingWord> {
                                   children: [
                                     SvgPicture.asset(AppIcons.addSound,
                                         height: 35.h),
-                                    const Text("تحميل صوت")
+                                    Text("تحميل صوت")
                                   ],
                                 ),
                               ),
@@ -144,13 +148,13 @@ class _EditingWordState extends State<EditingWord> {
                             width: 120.w,
                             child: InkWell(
                               onTap: () {
-                                if (!isUplodeAudio) {
-                                  player.setUrl(pEducMaterial.education!.audio);
-                                  player.play();
-                                } else {
+                                if (isUplodeAudio) {
                                   player.setFilePath(
                                       audioToPlay!.path.toString());
                                   player.play();
+                                } else {
+                                  AppToast.toast(
+                                      "الرجاء تحميل صوت للمادة التعليمية");
                                 }
                               },
                               child: Card(
@@ -163,65 +167,73 @@ class _EditingWordState extends State<EditingWord> {
                                   ],
                                 ),
                               ),
-                            )),
+                            ))
                       ],
                     )
                   ],
                 ),
-                // Button of cancel an accept
               ],
             )),
       ),
+      // Button of cancel an accept
+
       bottomNavigationBar: BottomAppBar(
-          elevation: 20,
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: [
-              CustomBtn(
-                icon: AppIcons.cancel,
-                colors: Colors.red,
-                title: "الغاء",
-                onTap: () {
-                  isSave ? null : Navigator.pop(context);
-                },
-              ),
-              CustomBtn(
-                icon: AppIcons.accept,
-                colors: Colors.green,
-                title: "تعديل",
-                onTap: isSave
-                    ? () {}
-                    : () {
-                        if (txtTitleController.text.isNotEmpty) {
-                          AppDialog.saveEducData(
-                            context,
-                            btnOkOnPress: () {
-                              setState(() {
-                                isSave = true;
-                              });
-                              pEducMaterial.updateEducationalMaterial(
-                                cardID: widget.id!,
-                                title: txtTitleController.text,
-                                audio: audioToPlay,
-                                image: imageToDisplay,
-                                cardType: widget.exampleType,
-                                educType: widget.educType,
-                                exampleType: widget.exampleType,
-                                context: context,
-                              );
-                            },
-                            btnCancelOnPress: () {},
-                          );
+        elevation: 20,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: [
+            CustomBtn(
+              icon: AppIcons.cancel,
+              colors: Colors.red,
+              title: "الغاء",
+              onTap: () {
+                isSave ? null : Navigator.pop(context);
+              },
+            ),
+            CustomBtn(
+              icon: AppIcons.accept,
+              colors: Colors.green,
+              title: "حفظ",
+              onTap: isSave
+                  ? () {}
+                  : () {
+                      if (txtTitleController.text.isNotEmpty) {
+                        if (isUplodeImage) {
+                          if (isUplodeAudio) {
+                            AppDialog.saveEducData(
+                              context,
+                              btnOkOnPress: () {
+                                setState(() {
+                                  isSave = true;
+                                });
+                                pEducMaterial.addEducationalMaterials(
+                                  title: txtTitleController.text,
+                                  audio: audioToPlay!,
+                                  image: imageToDisplay!,
+                                  cardType: widget.exampleType,
+                                  educType: widget.educType,
+                                  exampleType: widget.exampleType,
+                                  context: context,
+                                );
+                              },
+                              btnCancelOnPress: () {},
+                            );
+                          } else {
+                            AppToast.toast("الرجاء أختر صوت للمقرر");
+                          }
                         } else {
-                          AppToast.toast("الرجاء أدخل وصف المقرر");
-                          FocusScope.of(context)
-                              .requestFocus(txtTitleFocusNode);
+                          AppToast.toast("الرجاء أختر صورة للمقرر");
                         }
-                      },
-                child: isSave ? const CircularProgressIndicator() : null,
-              ),
-            ],
-          )),
+                      } else {
+                        AppToast.toast("الرجاء أدخل وصف المقرر");
+                        FocusScope.of(context).requestFocus(txtTitleFocusNode);
+                      }
+                    },
+              child: isSave ? const CircularProgressIndicator() : null,
+            ),
+          ],
+        ),
+      ),
     );
   }
 }

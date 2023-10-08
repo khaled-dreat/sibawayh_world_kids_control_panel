@@ -1,16 +1,16 @@
-part of '../../../../utils/import/app_import.dart';
+part of '../../../utils/import/app_import.dart';
 
-class ListViwBuildEditWords extends StatelessWidget {
-  const ListViwBuildEditWords({super.key});
+class EnListViewBuilder extends StatelessWidget {
+  const EnListViewBuilder({super.key});
 
   @override
   Widget build(BuildContext context) {
-    ControllerEducationalMaterialsManager pEducMaterial =
-        Provider.of<ControllerEducationalMaterialsManager>(
+    ControllerEducationData pEducMaterial =
+        Provider.of<ControllerEducationData>(
       context,
     );
-    final List<ModelEducation> data = pEducMaterial.allWords;
 
+    final List<ModelEducation> data = pEducMaterial.allWords;
     return ListView.builder(
       padding: EdgeInsets.symmetric(vertical: 20.r),
       itemCount: data.length,
@@ -21,11 +21,10 @@ class ListViwBuildEditWords extends StatelessWidget {
             AppRoutes.goMaterial(
                 context,
                 EditingWord(
-                  isEditing: true,
+                  educLang: EducLangEnum.en.title,
                   id: data.elementAt(index).id,
                   educType: EducTypeEnum.reading.title,
                   exampleType: EducExamTypeEnum.word.title,
-                  lang: EducLangEnum.ar.title,
                 ));
           },
         );

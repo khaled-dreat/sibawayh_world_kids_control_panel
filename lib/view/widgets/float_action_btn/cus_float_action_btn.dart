@@ -4,11 +4,9 @@ class CustomFloatingActionButton extends StatelessWidget {
   const CustomFloatingActionButton({
     super.key,
     required this.educType,
-    required this.lang,
     required this.exampleType,
   });
   final String educType;
-  final String lang;
   final String exampleType;
   @override
   Widget build(BuildContext context) {
@@ -16,11 +14,9 @@ class CustomFloatingActionButton extends StatelessWidget {
       onPressed: () {
         AppRoutes.goMaterial(
             context,
-            EditingWord(
-              isEditing: true,
+            AddWord(
               educType: educType,
-              exampleType: lang,
-              lang: exampleType,
+              exampleType: exampleType,
             ));
       },
       backgroundColor: Colors.green,

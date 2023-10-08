@@ -26,6 +26,5 @@ void main() async {
 List<SingleChildWidget> providers = [
   ChangeNotifierProvider(create: (_) => ContollerPicker()),
   ChangeNotifierProvider(create: (_) => ControllerAuth()),
-  ChangeNotifierProvider(
-      create: (_) => ControllerEducationalMaterialsManager()),
+  ChangeNotifierProvider(create: (_) => ControllerEducationData()),
 ];

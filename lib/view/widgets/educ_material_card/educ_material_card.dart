@@ -28,8 +28,8 @@ class EducMaterialCard extends StatelessWidget {
               Row(
                 children: [
                   data!.active
-                      ? const Icon(Icons.visibility_off, color: Colors.red)
-                      : const Icon(Icons.remove_red_eye, color: Colors.green),
+                      ? const Icon(Icons.remove_red_eye, color: Colors.green)
+                      : const Icon(Icons.visibility_off, color: Colors.red),
                   10.horizontalSpace,
                   Icon(
                     Icons.chevron_right,

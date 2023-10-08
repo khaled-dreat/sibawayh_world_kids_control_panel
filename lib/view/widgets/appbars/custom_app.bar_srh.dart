@@ -5,21 +5,24 @@ class CustomAppBarSrh extends StatelessWidget implements PreferredSizeWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        AppBar(),
-        10.verticalSpace,
-        const SizedBox(
-          height: kTextTabBarHeight * 1.5,
-          child: CustomTextField(
-              sufixicon: Icons.search,
-              hintText: "اكتب اسم عن العنصر الذي تريد البحث عنه"),
-        ),
-      ],
+    return AppBar(
+      bottom: TabBar(
+        indicatorSize: TabBarIndicatorSize.label,
+        tabs: [
+          Tab(text: AppLangKey.arabic.tr()),
+          Tab(text: AppLangKey.english.tr()),
+        ],
+      ),
     );
   }
 
   @override
   Size get preferredSize =>
-      Size.fromHeight(AppBar().preferredSize.height + kTextTabBarHeight * 2);
+      Size.fromHeight(AppBar().preferredSize.height + kTextTabBarHeight);
 }
+ // SizedBox(
+ //       height: 50,
+ //       child: CustomTextField(
+ //           sufixicon: Icons.search,
+ //           hintText: "اكتب اسم عن العنصر الذي تريد البحث عنه"),
+ //     ),

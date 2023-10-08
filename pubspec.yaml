@@ -52,6 +52,8 @@ dependencies:
   easy_localization: ^3.0.3
   loading_animation_widget: ^1.2.0+4
   just_audio: ^0.9.35
+  top_snackbar_flutter: ^3.1.0
+  awesome_dialog: ^3.1.0
   
 
 dev_dependencies:

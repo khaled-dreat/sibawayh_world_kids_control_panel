@@ -12,10 +12,12 @@ class CustomBtn extends StatelessWidget {
     required this.title,
     required this.onTap,
     required this.icon,
+    this.child,
   }) : super(key: key);
 
   final double? height;
   final String title;
+  final Widget? child;
   final void Function() onTap;
   @override
   Widget build(BuildContext context) {
@@ -36,10 +38,11 @@ class CustomBtn extends StatelessWidget {
             border: Border.all(),
             borderRadius: BorderRadius.circular(64.r),
           ),
-          child: SvgPicture.asset(
-            icon,
-            height: 50.h,
-          )),
+          child: child ??
+              SvgPicture.asset(
+                icon,
+                height: 50.h,
+              )),
     );
   }
 }
