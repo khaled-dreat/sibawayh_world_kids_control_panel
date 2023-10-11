@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
+import 'dart:math';
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:easy_localization/easy_localization.dart' as loc;
@@ -16,6 +17,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:google_speech/google_speech.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:provider/provider.dart';
@@ -48,6 +50,7 @@ part '../../view/splash/body.dart';
 part '../../view/selected_lang/body.dart';
 part '../../view/auth/wrapper.dart';
 part '../../view/edit_words/add_word/body.dart';
+part '../../view/edit_letters/body.dart';
 
 // ? **************** Utils ***********************
 part '../routes/app_routes.dart';
@@ -77,7 +80,7 @@ part '../../view/auth/widgets/auth_forgot_pass.dart';
 part '../../view/auth/widgets/auth_footer.dart';
 part '../../view/selected_lang/widgets/flag_lang.dart';
 part '../../view/widgets/error/error_text.dart';
-part '../../view/edit_words/widgets/text_field/custom_text_field.dart';
+part '../../view/widgets/txt_forms/custom_text_field.dart';
 part '../../view/widgets/appbars/custom_app.bar_srh.dart';
 part '../../view/widgets/float_action_btn/cus_float_action_btn.dart';
 part '../../view/widgets/educ_material_card/educ_material_card.dart';
@@ -92,6 +95,7 @@ part '../../view/edit_words/ar/tab_ar.dart';
 part '../../view/edit_words/ar/ar_list_viw.dart';
 part '../../view/edit_words/en/en_list_viw.dart';
 part '../../view/edit_words/en/tab_en.dart';
+part '../../view/widgets/txt_forms/custom_text_form_srh.dart';
 
 // ? **************** Controller ***********************
 part '../../controller/c_pick.dart';
@@ -100,6 +104,7 @@ part '../../controller/c_auth.dart';
 part '../../controller/education/c_add.dart';
 part '../../controller/education/c_get_education.dart';
 part '../../controller/education/c_education_method.dart';
+part '../../controller/c_srh.dart';
 
 // * **************** Services ***********************
 part '../../services/app_storeg_to_fire.dart';

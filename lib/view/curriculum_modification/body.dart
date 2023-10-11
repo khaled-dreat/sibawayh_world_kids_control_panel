@@ -24,6 +24,7 @@ class CurriculumModification extends StatelessWidget {
               CustomCard(
                 icon: AppIcons.editLetters,
                 title: "تعديل على الكلمات",
+                onTap: () => AppRoutes.go(context, EditLetters.nameRoute),
               ),
             ]),
             20.verticalSpace,

@@ -15,8 +15,8 @@ class EditImg extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-        width: 260.w,
-        height: 351.h,
+        width: 310.w,
+        height: 401.h,
         clipBehavior: Clip.antiAlias,
         decoration: BoxDecoration(
             border: Border.all(),
@@ -29,15 +29,15 @@ class EditImg extends StatelessWidget {
                     ? Image.file(
                         imageToDisplay!,
                         fit: BoxFit.fill,
-                        width: 260.w,
-                        height: 349.4.h,
+                        width: 310.w,
+                        height: 399.4.h,
                       )
                     : pEducMaterial.imgLoading
                         ? Image.network(
                             pEducMaterial.education!.image,
                             fit: BoxFit.fill,
-                            width: 260.w,
-                            height: 349.4.h,
+                            width: 310.w,
+                            height: 399.4.h,
                           )
                         : const AppLoading(
                             loading: TypeLoading.image,

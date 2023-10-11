@@ -1,23 +1,63 @@
 part of '../../utils/import/app_import.dart';
 
-class EditWords extends StatelessWidget {
+class EditWords extends StatefulWidget {
   static const String nameRoute = "EditWords";
   const EditWords({super.key});
-  final List<Widget> tabs = const [TabAr(), TabEn()];
+
+  @override
+  State<EditWords> createState() => _EditWordsState();
+}
+
+class _EditWordsState extends State<EditWords> {
+  TextEditingController txtSrhController = TextEditingController();
+
+  int currentIndex = 0;
+  List<Widget> tabs = const [TabAr(), TabEn()];
+  List<BottomNavigationBarItem> items = [
+    BottomNavigationBarItem(
+        icon: SvgPicture.asset(AppIcons.bottomNavBarWords, height: 28),
+        label: AppLangKey.arabic.tr()),
+    BottomNavigationBarItem(
+        icon: SvgPicture.asset(AppIcons.bottomNavBarWords, height: 28),
+        label: AppLangKey.english.tr())
+  ];
+
+  @override
+  void dispose() {
+    txtSrhController.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
-    return DefaultTabController(
-      length: tabs.length,
-      child: Scaffold(
-        appBar: const CustomAppBarSrh(),
-        body: TabBarView(
-            physics: const NeverScrollableScrollPhysics(), children: tabs),
-        floatingActionButton: CustomFloatingActionButton(
-          educType: EducTypeEnum.reading.title,
-          exampleType: EducExamTypeEnum.word.title,
-        ),
-        floatingActionButtonLocation: FloatingActionButtonLocation.startFloat,
+    ControllerSrh pSrh = Provider.of<ControllerSrh>(context);
+    return Scaffold(
+      appBar: CustomAppBarSrh(
+        controller: txtSrhController,
+        onChanged: (value) {
+          pSrh.changeSrhValue(value);
+        },
       ),
+      bottomNavigationBar: BottomNavigationBar(
+        elevation: 20,
+        iconSize: 30,
+        selectedFontSize: 15.sp,
+        unselectedFontSize: 13.sp,
+        items: items,
+        currentIndex: currentIndex,
+        onTap: (value) {
+          setState(() {
+            currentIndex = value;
+            txtSrhController.text = "";
+          });
+        },
+      ),
+      body: Center(child: tabs[currentIndex]),
+      floatingActionButton: CustomFloatingActionButton(
+        educType: EducTypeEnum.reading.title,
+        exampleType: EducExamTypeEnum.word.title,
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.startFloat,
     );
   }
 }

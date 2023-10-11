@@ -31,14 +31,7 @@ class _TabEnState extends State<TabEn> {
             loading: TypeLoading.page,
           )
         : (pEducMaterial.allWords.isNotEmpty)
-            ? RefreshIndicator(
-                onRefresh: onRefresh, child: const EnListViewBuilder())
+            ? const EnListViewBuilder()
             : ErrorText(title: AppLangKey.errorNoData);
-  }
-
-  Future<void> onRefresh() async {
-    ControllerEducationData pEducMaterial =
-        Provider.of<ControllerEducationData>(context, listen: false);
-    pEducMaterial.fetchDataEduc();
   }
 }

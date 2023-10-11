@@ -13,7 +13,7 @@ class _PageSplashState extends State<PageSplash> {
   @override
   void initState() {
     super.initState();
-    Timer(Duration(seconds: 3), () async {
+    Timer(const Duration(seconds: 3), () async {
       if (await AppLang.showSelectLang) {
         AppRoutes.goReplace(context, PageSelectedLang.nameRoute);
       } else {

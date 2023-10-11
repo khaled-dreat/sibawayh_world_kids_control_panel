@@ -5,30 +5,64 @@ class ArListViewBuilder extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    ControllerEducationData pEducMaterial =
-        Provider.of<ControllerEducationData>(
+    ControllerSrh pSrh = Provider.of<ControllerSrh>(
       context,
     );
 
-    final List<ModelEducation> data = pEducMaterial.allWords;
-    return ListView.builder(
-      padding: EdgeInsets.symmetric(vertical: 20.r),
-      itemCount: data.length,
-      itemBuilder: (BuildContext context, int index) {
-        return EducMaterialCard(
-          data: data.elementAt(index),
-          onTap: () {
-            AppRoutes.goMaterial(
-                context,
-                EditingWord(
-                  educLang: EducLangEnum.ar.title,
-                  id: data.elementAt(index).id,
-                  educType: EducTypeEnum.reading.title,
-                  exampleType: EducExamTypeEnum.word.title,
-                ));
-          },
-        );
-      },
-    );
+    return StreamBuilder<QuerySnapshot>(
+        stream: pSrh.srhQuery(EducLangEnum.ar.title),
+        builder: (context, snapshot) {
+          if (snapshot.hasError) {
+            return ErrorText(title: AppLangKey.errorNoData);
+          }
+
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const AppLoading(
+              loading: TypeLoading.page,
+            );
+          }
+
+          return ListView.builder(
+            itemCount: snapshot.data!.docs.length,
+            itemBuilder: (BuildContext context, int index) {
+              QueryDocumentSnapshot<Object?> data = snapshot.data!.docs[index];
+
+              return EducMaterialCard(
+                data: data,
+                onTap: () {
+                  AppRoutes.goMaterial(
+                      context,
+                      EditingWord(
+                        educLang: EducLangEnum.ar.title,
+                        id: data[AppFirebaseKey.id],
+                        educType: EducTypeEnum.reading.title,
+                        exampleType: EducExamTypeEnum.word.title,
+                      ));
+                },
+              );
+            },
+          );
+        });
   }
 }
+
+
+
+ //ListView.builder(
+ //     itemCount: data.length,
+ //     itemBuilder: (BuildContext context, int index) {
+ //       return EducMaterialCard(
+ //         data: data.elementAt(index),
+ //         onTap: () {
+ //           AppRoutes.goMaterial(
+ //               context,
+ //               EditingWord(
+ //                 educLang: EducLangEnum.ar.title,
+ //                 id: data.elementAt(index).id,
+ //                 educType: EducTypeEnum.reading.title,
+ //                 exampleType: EducExamTypeEnum.word.title,
+ //               ));
+ //         },
+ //       );
+ //     },
+ //   );

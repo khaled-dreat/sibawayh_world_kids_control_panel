@@ -14,6 +14,7 @@ class AppIcons {
   static const String editingwriting = 'assets/svg/Editing of writing.svg';
   static const String cancel = 'assets/svg/cancel.svg';
   static const String accept = 'assets/svg/accept.svg';
+  static const String bottomNavBarWords = 'assets/svg/Nav_bottn_bar_words.svg';
 
   static IconData mail = CupertinoIcons.mail_solid;
   static IconData pass = CupertinoIcons.lock_fill;

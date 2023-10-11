@@ -34,10 +34,4 @@ class _TabArState extends State<TabAr> {
             ? const ArListViewBuilder()
             : ErrorText(title: AppLangKey.errorNoData);
   }
-
-  Future<void> onRefresh() async {
-    ControllerEducationData pEducMaterial =
-        Provider.of<ControllerEducationData>(context, listen: false);
-    pEducMaterial.fetchDataEduc();
-  }
 }

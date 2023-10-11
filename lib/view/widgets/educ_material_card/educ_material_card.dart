@@ -6,12 +6,12 @@ class EducMaterialCard extends StatelessWidget {
     required this.data,
     this.onTap,
   });
-  final ModelEducation? data;
+  final QueryDocumentSnapshot<Object?>? data;
   final void Function()? onTap;
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.symmetric(vertical: 7.r),
+      margin: EdgeInsets.only(bottom: 9.r),
       height: 65.h,
       child: InkWell(
         onTap: onTap,
@@ -22,14 +22,33 @@ class EducMaterialCard extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Padding(
-                padding: EdgeInsets.all(20.r),
-                child: Text(data!.title, style: TextStyle(fontSize: 25.sp)),
+                padding: EdgeInsets.only(right: 20.r),
+                child: Text(data![AppFirebaseKey.title],
+                    style: TextStyle(fontSize: 25.sp)),
               ),
               Row(
                 children: [
-                  data!.active
-                      ? const Icon(Icons.remove_red_eye, color: Colors.green)
-                      : const Icon(Icons.visibility_off, color: Colors.red),
+                  IconButton(
+                      onPressed: () {
+                        ControllerEducationData pEduca =
+                            Provider.of<ControllerEducationData>(context,
+                                listen: false);
+                        pEduca.deleteEducation(
+                          audio: data![AppFirebaseKey.audio],
+                          image: data![AppFirebaseKey.image],
+                          title: data![AppFirebaseKey.title],
+                          educType: data![AppFirebaseKey.educType],
+                          exampleType: data![AppFirebaseKey.exampleType],
+                          id: data![AppFirebaseKey.id],
+                        );
+                        AppSnackBar.snackBarSuccess(context,
+                            msg: "تمت عملية الحذف بنجاح");
+                      },
+                      icon: Icon(
+                        Icons.delete,
+                        color: Colors.red,
+                        size: 28.r,
+                      )),
                   10.horizontalSpace,
                   Icon(
                     Icons.chevron_right,

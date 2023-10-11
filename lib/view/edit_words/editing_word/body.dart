@@ -82,6 +82,7 @@ class _EditingWordState extends State<EditingWord> {
 
     // ToDo : Refactor Wdgets
     return Scaffold(
+      backgroundColor: Colors.white,
       body: SingleChildScrollView(
         child: Container(
             width: MediaQuery.sizeOf(context).width,
@@ -95,6 +96,9 @@ class _EditingWordState extends State<EditingWord> {
                     txtTitleFocusNode: txtTitleFocusNode,
                     txtTitleController: txtTitleController),
                 20.verticalSpace,
+                //  DropDown Select Lang
+                const DropDownSelectLang(),
+                20.verticalSpace,
                 // add img
                 InkWell(
                   onTap: () {
@@ -106,66 +110,56 @@ class _EditingWordState extends State<EditingWord> {
                       pEducMaterial: pEducMaterial),
                 ),
                 20.verticalSpace,
-                // * Add, Play Audio and  DropDownSelectLang
+                // * Add, Play Audio
                 Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
-                    //  DropDown Select Lang
-                    DropDownSelectLang(),
-                    Container(
-                        height: 130.h,
-                        width: 2.w,
-                        decoration: BoxDecoration(
-                            color: Colors.grey,
-                            borderRadius: BorderRadius.circular(10.r))),
-                    Column(
-                      children: [
-                        // add Audio
-                        SizedBox(
-                            height: 70.h,
-                            width: 120.w,
-                            child: InkWell(
-                              onTap: () {
-                                pickFile(fileType: FileType.audio);
-                              },
-                              child: Card(
-                                child: Column(
-                                  children: [
-                                    SvgPicture.asset(AppIcons.addSound,
-                                        height: 35.h),
-                                    const Text("تحميل صوت")
-                                  ],
-                                ),
-                              ),
-                            )),
-                        // play Audio
-                        SizedBox(
-                            height: 70.h,
-                            width: 120.w,
-                            child: InkWell(
-                              onTap: () {
-                                if (!isUplodeAudio) {
-                                  player.setUrl(pEducMaterial.education!.audio);
-                                  player.play();
-                                } else {
-                                  player.setFilePath(
-                                      audioToPlay!.path.toString());
-                                  player.play();
-                                }
-                              },
-                              child: Card(
-                                child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    SvgPicture.asset(AppIcons.playSound,
-                                        height: 35.h),
-                                    Text("تشغيل الصوت")
-                                  ],
-                                ),
-                              ),
-                            )),
-                      ],
-                    )
+                    // add Audio
+                    SizedBox(
+                        height: 70.h,
+                        width: 150.w,
+                        child: InkWell(
+                          onTap: () {
+                            pickFile(fileType: FileType.audio);
+                          },
+                          child: Card(
+                            color: Colors.grey.shade100,
+                            child: Column(
+                              children: [
+                                SvgPicture.asset(AppIcons.addSound,
+                                    height: 35.h),
+                                const Text("تحميل صوت")
+                              ],
+                            ),
+                          ),
+                        )),
+
+                    // play Audio
+                    SizedBox(
+                        height: 70.h,
+                        width: 150.w,
+                        child: InkWell(
+                          onTap: () {
+                            if (!isUplodeAudio) {
+                              player.setUrl(pEducMaterial.education!.audio);
+                              player.play();
+                            } else {
+                              player.setFilePath(audioToPlay!.path.toString());
+                              player.play();
+                            }
+                          },
+                          child: Card(
+                            color: Colors.grey.shade100,
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                SvgPicture.asset(AppIcons.playSound,
+                                    height: 35.h),
+                                Text("تشغيل الصوت")
+                              ],
+                            ),
+                          ),
+                        )),
                   ],
                 ),
                 // Button of cancel an accept
@@ -199,6 +193,8 @@ class _EditingWordState extends State<EditingWord> {
                               setState(() {
                                 isSave = true;
                               });
+
+                              if (audioToPlay != null) {}
                               pEducMaterial.updateEducationalMaterial(
                                 cardID: widget.id!,
                                 title: txtTitleController.text,

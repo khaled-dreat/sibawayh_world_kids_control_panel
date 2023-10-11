@@ -14,10 +14,11 @@ class AppRoutes {
     PageSplash.nameRoute: (context) => const PageSplash(),
     PageSelectedLang.nameRoute: (context) => const PageSelectedLang(),
     Wrapper.nameRoute: (context) => const Wrapper(),
+    EditLetters.nameRoute: (context) => const EditLetters(),
   };
 
   // * inti Route
-  static String? get initRoute => HomePage.nameRoute;
+  static String? get initRoute => PageSplash.nameRoute;
 
   // * push Name
   static void go(BuildContext context, String nameRoute) =>

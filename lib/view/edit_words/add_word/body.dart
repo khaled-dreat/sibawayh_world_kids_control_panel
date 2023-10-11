@@ -66,13 +66,15 @@ class _AddWordState extends State<AddWord> {
             width: MediaQuery.sizeOf(context).width,
             height: MediaQuery.sizeOf(context).height,
             child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
               children: [
+                20.verticalSpace,
                 // title
                 TxtTitle(
                     txtTitleFocusNode: txtTitleFocusNode,
                     txtTitleController: txtTitleController),
+                20.verticalSpace,
+                //  DropDown Select Lang
+                const DropDownSelectLang(),
                 20.verticalSpace,
                 // add img
                 InkWell(
@@ -80,8 +82,8 @@ class _AddWordState extends State<AddWord> {
                     pickFile(fileType: FileType.image);
                   },
                   child: Container(
-                      width: 260.w,
-                      height: 351.h,
+                      width: 310.w,
+                      height: 401.h,
                       clipBehavior: Clip.antiAlias,
                       decoration: BoxDecoration(
                           border: Border.all(),
@@ -95,8 +97,8 @@ class _AddWordState extends State<AddWord> {
                                 ? Image.file(
                                     imageToDisplay!,
                                     fit: BoxFit.fill,
-                                    width: 260.w,
-                                    height: 349.4.h,
+                                    width: 310.w,
+                                    height: 399.4.h,
                                   )
                                 : SizedBox(
                                     height: 70.h,
@@ -110,66 +112,53 @@ class _AddWordState extends State<AddWord> {
                 ),
 
                 20.verticalSpace,
-                // * Add, Play Audio and  DropDownSelectLang
+                // * Add, Play Audio
                 Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
-                    //  DropDown Select Lang
-                    const DropDownSelectLang(),
-                    Container(
-                        height: 130.h,
-                        width: 2.w,
-                        decoration: BoxDecoration(
-                            color: Colors.grey,
-                            borderRadius: BorderRadius.circular(10.r))),
-                    Column(
-                      children: [
-                        // add Audio
-                        SizedBox(
-                            height: 70.h,
-                            width: 120.w,
-                            child: InkWell(
-                              onTap: () {
-                                pickFile(fileType: FileType.audio);
-                              },
-                              child: Card(
-                                child: Column(
-                                  children: [
-                                    SvgPicture.asset(AppIcons.addSound,
-                                        height: 35.h),
-                                    Text("تحميل صوت")
-                                  ],
-                                ),
-                              ),
-                            )),
-                        // play Audio
-                        SizedBox(
-                            height: 70.h,
-                            width: 120.w,
-                            child: InkWell(
-                              onTap: () {
-                                if (isUplodeAudio) {
-                                  player.setFilePath(
-                                      audioToPlay!.path.toString());
-                                  player.play();
-                                } else {
-                                  AppToast.toast(
-                                      "الرجاء تحميل صوت للمادة التعليمية");
-                                }
-                              },
-                              child: Card(
-                                child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    SvgPicture.asset(AppIcons.playSound,
-                                        height: 35.h),
-                                    Text("تشغيل الصوت")
-                                  ],
-                                ),
-                              ),
-                            ))
-                      ],
-                    )
+                    // add Audio
+                    SizedBox(
+                        height: 70.h,
+                        width: 120.w,
+                        child: InkWell(
+                          onTap: () {
+                            pickFile(fileType: FileType.audio);
+                          },
+                          child: Card(
+                            child: Column(
+                              children: [
+                                SvgPicture.asset(AppIcons.addSound,
+                                    height: 35.h),
+                                Text("تحميل صوت")
+                              ],
+                            ),
+                          ),
+                        )),
+                    // play Audio
+                    SizedBox(
+                        height: 70.h,
+                        width: 120.w,
+                        child: InkWell(
+                          onTap: () {
+                            if (isUplodeAudio) {
+                              player.setFilePath(audioToPlay!.path.toString());
+                              player.play();
+                            } else {
+                              AppToast.toast(
+                                  "الرجاء تحميل صوت للمادة التعليمية");
+                            }
+                          },
+                          child: Card(
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                SvgPicture.asset(AppIcons.playSound,
+                                    height: 35.h),
+                                Text("تشغيل الصوت")
+                              ],
+                            ),
+                          ),
+                        ))
                   ],
                 ),
               ],
@@ -206,6 +195,12 @@ class _AddWordState extends State<AddWord> {
                                 setState(() {
                                   isSave = true;
                                 });
+
+                                List<int> audioToText = pEducMaterial
+                                    .convertAudioToList(audioToPlay!);
+
+                                pEducMaterial.transcribe(audioToText, context);
+
                                 pEducMaterial.addEducationalMaterials(
                                   title: txtTitleController.text,
                                   audio: audioToPlay!,

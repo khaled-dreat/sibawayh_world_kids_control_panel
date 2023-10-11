@@ -27,4 +27,5 @@ List<SingleChildWidget> providers = [
   ChangeNotifierProvider(create: (_) => ContollerPicker()),
   ChangeNotifierProvider(create: (_) => ControllerAuth()),
   ChangeNotifierProvider(create: (_) => ControllerEducationData()),
+  ChangeNotifierProvider(create: (_) => ControllerSrh()),
 ];
