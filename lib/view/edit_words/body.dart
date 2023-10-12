@@ -23,6 +23,19 @@ class _EditWordsState extends State<EditWords> {
   ];
 
   @override
+  void initState() {
+    super.initState();
+    Future.delayed(
+      Duration.zero,
+      () {
+        AppConnectivityManager pConnectivity =
+            Provider.of<AppConnectivityManager>(context, listen: false);
+        pConnectivity.checkConnectitivy();
+      },
+    );
+  }
+
+  @override
   void dispose() {
     txtSrhController.dispose();
     super.dispose();
@@ -31,6 +44,8 @@ class _EditWordsState extends State<EditWords> {
   @override
   Widget build(BuildContext context) {
     ControllerSrh pSrh = Provider.of<ControllerSrh>(context);
+    AppConnectivityManager pConnectivity =
+        Provider.of<AppConnectivityManager>(context);
     return Scaffold(
       appBar: CustomAppBarSrh(
         controller: txtSrhController,
@@ -54,6 +69,7 @@ class _EditWordsState extends State<EditWords> {
       ),
       body: Center(child: tabs[currentIndex]),
       floatingActionButton: CustomFloatingActionButton(
+        isconnect: pConnectivity.isconnect,
         educType: EducTypeEnum.reading.title,
         exampleType: EducExamTypeEnum.word.title,
       ),

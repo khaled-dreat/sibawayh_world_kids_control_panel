@@ -8,7 +8,8 @@ class EnListViewBuilder extends StatelessWidget {
     ControllerSrh pSrh = Provider.of<ControllerSrh>(
       context,
     );
-
+    AppConnectivityManager pConnectivity =
+        Provider.of<AppConnectivityManager>(context);
     return StreamBuilder<QuerySnapshot>(
         stream: pSrh.srhQuery(EducLangEnum.en.title),
         builder: (context, snapshot) {
@@ -30,14 +31,17 @@ class EnListViewBuilder extends StatelessWidget {
               return EducMaterialCard(
                 data: data,
                 onTap: () {
-                  AppRoutes.goMaterial(
-                      context,
-                      EditingWord(
-                        educLang: EducLangEnum.en.title,
-                        id: data[AppFirebaseKey.id],
-                        educType: EducTypeEnum.reading.title,
-                        exampleType: EducExamTypeEnum.word.title,
-                      ));
+                  pConnectivity.isconnect
+                      ? AppRoutes.goMaterial(
+                          context,
+                          EditingWord(
+                            educLang: EducLangEnum.en.title,
+                            id: data[AppFirebaseKey.id],
+                            educType: EducTypeEnum.reading.title,
+                            exampleType: EducExamTypeEnum.word.title,
+                          ))
+                      : AppToast.toast(
+                          "الرجاء التأكد من حالة الاتصال بل انترنت");
                 },
               );
             },

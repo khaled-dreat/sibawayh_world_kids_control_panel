@@ -29,6 +29,7 @@ import 'package:top_snackbar_flutter/top_snack_bar.dart';
 import 'package:uuid/uuid.dart';
 import '../constant/app_icons.dart';
 import 'package:just_audio/just_audio.dart';
+import 'package:connectivity_plus/connectivity_plus.dart';
 
 // ? **************** Show & AS ***********************
 import 'dart:developer' as dev;
@@ -102,12 +103,13 @@ part '../../controller/c_pick.dart';
 part '../../controller/education/c_editing.dart';
 part '../../controller/c_auth.dart';
 part '../../controller/education/c_add.dart';
-part '../../controller/education/c_get_education.dart';
-part '../../controller/education/c_education_method.dart';
+part '../../controller/education/c_letters_maneg.dart';
+part '../../controller/education/c_word_maneg.dart';
 part '../../controller/c_srh.dart';
 
 // * **************** Services ***********************
 part '../../services/app_storeg_to_fire.dart';
+part '../../controller/c_connectivity_manager.dart';
 
 // ? **************** Model ***********************
 part '../../model/education/m_education.dart';

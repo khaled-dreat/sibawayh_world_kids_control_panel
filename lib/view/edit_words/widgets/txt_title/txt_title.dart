@@ -22,7 +22,7 @@ class TxtTitle extends StatelessWidget {
           style: TextStyle(
               color: Colors.black54,
               fontWeight: FontWeight.w600,
-              fontSize: 20.sp),
+              fontSize: 25.sp),
           maxLines: 1,
           decoration: InputDecoration(
             fillColor: Colors.grey.shade100,
@@ -30,7 +30,7 @@ class TxtTitle extends StatelessWidget {
             hintStyle: TextStyle(
                 color: Colors.black38,
                 fontWeight: FontWeight.w600,
-                fontSize: 20.sp),
+                fontSize: 25.sp),
             hintText: "أكتب وصف المقرر",
             border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(10),

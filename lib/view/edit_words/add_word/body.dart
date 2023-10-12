@@ -56,13 +56,14 @@ class _AddWordState extends State<AddWord> {
 
   @override
   Widget build(BuildContext context) {
-    ControllerEducationData pEducMaterial =
-        Provider.of<ControllerEducationData>(context);
+    ControllerWordManeg pEducMaterial =
+        Provider.of<ControllerWordManeg>(context);
     AudioPlayer player = AudioPlayer();
 
     return Scaffold(
+      backgroundColor: Colors.white,
       body: SingleChildScrollView(
-        child: Container(
+        child: SizedBox(
             width: MediaQuery.sizeOf(context).width,
             height: MediaQuery.sizeOf(context).height,
             child: Column(
@@ -72,10 +73,74 @@ class _AddWordState extends State<AddWord> {
                 TxtTitle(
                     txtTitleFocusNode: txtTitleFocusNode,
                     txtTitleController: txtTitleController),
-                20.verticalSpace,
+                15.verticalSpace,
                 //  DropDown Select Lang
-                const DropDownSelectLang(),
-                20.verticalSpace,
+                const DropDownSelectLang(isEditing: false),
+                15.verticalSpace,
+                // * Add, Play Audio
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    // add Audio
+                    SizedBox(
+                        height: 80.h,
+                        width: 150.w,
+                        child: InkWell(
+                          onTap: () {
+                            pickFile(fileType: FileType.audio);
+                          },
+                          child: Card(
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(20)),
+                            color: Colors.green.shade100,
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                SvgPicture.asset(AppIcons.addSound,
+                                    height: 35.h),
+                                Text(
+                                  "تحميل صوت",
+                                  style: TextStyle(fontSize: 15.sp),
+                                )
+                              ],
+                            ),
+                          ),
+                        )),
+                    // play Audio
+                    SizedBox(
+                        height: 80.h,
+                        width: 150.w,
+                        child: InkWell(
+                          onTap: () {
+                            if (isUplodeAudio) {
+                              player.setFilePath(audioToPlay!.path.toString());
+                              player.play();
+                            } else {
+                              AppToast.toast(
+                                  "الرجاء تحميل صوت للمادة التعليمية");
+                            }
+                          },
+                          child: Card(
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(20)),
+                            color: Colors.green.shade100,
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                SvgPicture.asset(AppIcons.playSound,
+                                    height: 35.h),
+                                Text(
+                                  "تشغيل الصوت",
+                                  style: TextStyle(fontSize: 15.sp),
+                                )
+                              ],
+                            ),
+                          ),
+                        ))
+                  ],
+                ),
+                15.verticalSpace,
+
                 // add img
                 InkWell(
                   onTap: () {
@@ -109,57 +174,6 @@ class _AddWordState extends State<AddWord> {
                           ),
                         ],
                       )),
-                ),
-
-                20.verticalSpace,
-                // * Add, Play Audio
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    // add Audio
-                    SizedBox(
-                        height: 70.h,
-                        width: 120.w,
-                        child: InkWell(
-                          onTap: () {
-                            pickFile(fileType: FileType.audio);
-                          },
-                          child: Card(
-                            child: Column(
-                              children: [
-                                SvgPicture.asset(AppIcons.addSound,
-                                    height: 35.h),
-                                Text("تحميل صوت")
-                              ],
-                            ),
-                          ),
-                        )),
-                    // play Audio
-                    SizedBox(
-                        height: 70.h,
-                        width: 120.w,
-                        child: InkWell(
-                          onTap: () {
-                            if (isUplodeAudio) {
-                              player.setFilePath(audioToPlay!.path.toString());
-                              player.play();
-                            } else {
-                              AppToast.toast(
-                                  "الرجاء تحميل صوت للمادة التعليمية");
-                            }
-                          },
-                          child: Card(
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                SvgPicture.asset(AppIcons.playSound,
-                                    height: 35.h),
-                                Text("تشغيل الصوت")
-                              ],
-                            ),
-                          ),
-                        ))
-                  ],
                 ),
               ],
             )),
@@ -201,7 +215,7 @@ class _AddWordState extends State<AddWord> {
 
                                 pEducMaterial.transcribe(audioToText, context);
 
-                                pEducMaterial.addEducationalMaterials(
+                                pEducMaterial.addWord(
                                   title: txtTitleController.text,
                                   audio: audioToPlay!,
                                   image: imageToDisplay!,

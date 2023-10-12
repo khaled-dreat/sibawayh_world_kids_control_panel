@@ -36,7 +36,7 @@ class CustomBtn extends StatelessWidget {
           alignment: Alignment.center,
           decoration: BoxDecoration(
             border: Border.all(),
-            borderRadius: BorderRadius.circular(64.r),
+            borderRadius: BorderRadius.circular(30.r),
           ),
           child: child ??
               SvgPicture.asset(

@@ -13,17 +13,16 @@ class _TabEnState extends State<TabEn> {
     super.initState();
 
     Future.delayed(Duration.zero, () {
-      ControllerEducationData pEducMaterial =
-          Provider.of<ControllerEducationData>(context, listen: false);
+      ControllerWordManeg pEducMaterial =
+          Provider.of<ControllerWordManeg>(context, listen: false);
       pEducMaterial.changeEducaLang(EducLangEnum.en.title);
-      pEducMaterial.getEducationalMaterials();
+      pEducMaterial.getAllWord();
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    ControllerEducationData pEducMaterial =
-        Provider.of<ControllerEducationData>(
+    ControllerWordManeg pEducMaterial = Provider.of<ControllerWordManeg>(
       context,
     );
     return pEducMaterial.isGetAllEducMatr

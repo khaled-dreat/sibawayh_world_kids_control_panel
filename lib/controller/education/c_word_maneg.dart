@@ -1,25 +1,18 @@
 part of '../../utils/import/app_import.dart';
 
-class ControllerEducationData extends ChangeNotifier {
+class ControllerWordManeg extends ChangeNotifier {
   final FirebaseFirestore firestore = FirebaseFirestore.instance;
   final FirebaseAuth auth = FirebaseAuth.instance;
   ModelEducation? education;
 
-  List<ModelEducation> allWords = [];
+// ? ************************ Get Word Material Data **********************
 
-  Future<void> fetchDataEduc() async {
-    getEducationalMaterials();
-  }
+  // * Get Word Material Data by ID
 
   bool imgLoading = false;
   void changeImgLodaing(bool value) {
     imgLoading = value;
     notifyListeners();
-  }
-
-  String title = "";
-  void changeTitle(String value) {
-    title = value;
   }
 
   String educaLang = "";
@@ -28,39 +21,12 @@ class ControllerEducationData extends ChangeNotifier {
     changeEducaLangData(value);
   }
 
-  String educaLangData = "";
-  void changeEducaLangData(String value) {
-    educaLangData = value;
+  String title = "";
+  void changeTitle(String value) {
+    title = value;
   }
 
-  String oldLangEduc = "";
-  void changeOldLangEduc(String value) {
-    oldLangEduc = value;
-  }
-
-  bool isGetAllEducMatr = true;
-  void changeIsGetAllEducMatr(bool value) {
-    isGetAllEducMatr = value;
-    notifyListeners();
-  }
-
-  // * Use To Save The Text Return From  Google Clude
-  String content = "";
-  String oldContent = "";
-
-  // * Change Content Value
-  void changeContent(String value) {
-    content = value;
-    notifyListeners();
-  }
-
-  void changeOldContent(String value) {
-    content = value;
-    notifyListeners();
-  }
-
-  // * Get Educational Material Data by ID
-  Future<void> getEducationalMaterialByID({
+  Future<void> getWordByID({
     required String id,
     required String educType,
     required String exampleType,
@@ -81,13 +47,21 @@ class ControllerEducationData extends ChangeNotifier {
       changeOldLangEduc(education!.lang);
       changeOldContent(education!.textSpeehcToText);
       changeTitle(education!.title);
-      //   changeEducaLang(education!.lang);
       changeImgLodaing(true);
     }
   }
 
-// * Get All Educational Materials
-  Future<void> getEducationalMaterials() async {
+// * Get All Word Materials
+
+  bool isGetAllEducMatr = true;
+  void changeIsGetAllEducMatr(bool value) {
+    isGetAllEducMatr = value;
+    notifyListeners();
+  }
+
+  List<ModelEducation> allWords = [];
+
+  Future<void> getAllWord() async {
     allWords = [];
     changeIsGetAllEducMatr(true);
     firestore
@@ -111,8 +85,21 @@ class ControllerEducationData extends ChangeNotifier {
     });
   }
 
-  // * Save Education Material Data in Firestore
-  void _saveEducationalMaterialsToMrssaheSubcollection({
+// ? ************************ Save Word Data **********************
+
+  // * Save Word Data in Firestore
+
+  String educaLangData = "";
+  void changeEducaLangData(String value) {
+    educaLangData = value;
+  }
+
+  String oldLangEduc = "";
+  void changeOldLangEduc(String value) {
+    oldLangEduc = value;
+  }
+
+  void _saveWordToMrssaheSubcollection({
     required String id,
     required String title,
     required String imageUrl,
@@ -150,8 +137,94 @@ class ControllerEducationData extends ChangeNotifier {
         .set(education.toMap());
   }
 
-  // * Update Education Material Data in Firestore
-  void _updateEducationalMaterialsToMrssaheSubcollection({
+  // * Add Word Data
+
+  Future<void> addWord(
+      {required String title,
+      required File audio,
+      required File image,
+      required String cardType,
+      required String educType,
+      required String exampleType,
+      required BuildContext context}) async {
+    try {
+      DateTime timeSend = DateTime.now();
+      String cardID = const Uuid().v1();
+      String imageUrl = await StoregFileManagement()
+          .storageFileTOFirebase('materials/$cardType/$title/image', image);
+      String audioUrl = await StoregFileManagement()
+          .storageFileTOFirebase('materials/$cardType/$title/audio', audio);
+
+      await Future.delayed(
+        Duration.zero,
+        () {
+          transcribe(convertAudioToList(audio), context);
+        },
+      );
+      if (content.isNotEmpty) {
+        _saveWordToMrssaheSubcollection(
+            id: cardID,
+            title: title,
+            imageUrl: imageUrl,
+            audioUrl: audioUrl,
+            details: "details",
+            textSpeehcToText: content,
+            active: true,
+            timeSend: timeSend,
+            educType: educType,
+            lang: educaLangData,
+            exampleType: exampleType);
+        await Future.delayed(
+          Duration.zero,
+          () {
+            Navigator.pop(context);
+            fetchWordData();
+            AppSnackBar.snackBarSuccess(context, msg: "تمت عملية الحفظ بنجاح");
+          },
+        );
+      } else {
+        await Future.delayed(
+          Duration.zero,
+          () {
+            Navigator.pop(context);
+            fetchWordData();
+            AppSnackBar.snackBarError(context,
+                msg: "الرجاء التأكد من جودة الصوت المختار");
+          },
+        );
+      }
+    } catch (e) {
+      dev.log(e.toString());
+    }
+  }
+
+  // ? ************************ Update Word Data **********************
+
+  Future<void> fetchWordData() async {
+    getAllWord();
+  }
+
+  // * Use To Save The Text Return From  Google Clude
+  String content = "";
+  String oldContent = "";
+
+  // * Change Content Value
+  void changeContent(String value) {
+    content = value;
+    notifyListeners();
+  }
+
+  void changeOldContent(String value) {
+    content = value;
+    notifyListeners();
+  }
+
+  List<int> convertAudioToList(File audio) {
+    return audio.readAsBytesSync().toList();
+  }
+
+  // * Update Word Data in Firestore
+  void _updateWordInMrssaheSubcollection({
     required String id,
     required String title,
     required String imageUrl,
@@ -212,8 +285,8 @@ class ControllerEducationData extends ChangeNotifier {
     }
   }
 
-// * Update Education Materila
-  Future<void> updateEducationalMaterial(
+// * Update Word Data
+  Future<void> updateWord(
       {required String title,
       required String cardID,
       required File? audio,
@@ -222,107 +295,56 @@ class ControllerEducationData extends ChangeNotifier {
       required String educType,
       required String exampleType,
       required BuildContext context}) async {
-    DateTime timeSend = DateTime.now();
-
-    late String audioUrl;
-    late String imageUrl;
-    if (audio == null) {
-      audioUrl = education!.audio;
-      content = education!.textSpeehcToText;
-    } else {
-      transcribe(convertAudioToList(audio), context);
-      if (content.isNotEmpty) {
-        audioUrl = await StoregFileManagement()
-            .storageFileTOFirebase('materials/$cardType/$title/audio', audio);
-        imageUrl = image == null
-            ? education!.image
-            : await StoregFileManagement().storageFileTOFirebase(
-                'materials/$cardType/$title/image', image);
+    try {
+      DateTime timeSend = DateTime.now();
+      late String audioUrl;
+      late String imageUrl;
+      if (audio == null) {
+        audioUrl = education!.audio;
+        content = education!.textSpeehcToText;
+      } else {
+        await transcribe(convertAudioToList(audio), context);
+        if (content.isNotEmpty) {
+          audioUrl = await StoregFileManagement()
+              .storageFileTOFirebase('materials/$cardType/$title/audio', audio);
+        }
       }
+      imageUrl = image == null
+          ? education!.image
+          : await StoregFileManagement()
+              .storageFileTOFirebase('materials/$cardType/$title/image', image);
+      if (content.isNotEmpty) {
+        _updateWordInMrssaheSubcollection(
+            id: cardID,
+            title: title,
+            imageUrl: imageUrl,
+            audioUrl: audioUrl,
+            details: "details",
+            textSpeehcToText: content,
+            active: true,
+            timeSend: timeSend,
+            educType: educType,
+            lang: educaLangData,
+            exampleType: exampleType);
+
+        await Future.delayed(
+          Duration.zero,
+          () {
+            Navigator.pop(context);
+            fetchWordData();
+            AppSnackBar.snackBarSuccess(context,
+                msg: "تمت عملية التعديل بنجاح");
+          },
+        );
+      } else {}
+    } catch (e) {
+      dev.log(e.toString());
     }
-    if (content.isNotEmpty) {
-      _updateEducationalMaterialsToMrssaheSubcollection(
-          id: cardID,
-          title: title,
-          imageUrl: imageUrl,
-          audioUrl: audioUrl,
-          details: "details",
-          textSpeehcToText: content,
-          active: true,
-          timeSend: timeSend,
-          educType: educType,
-          lang: educaLangData,
-          exampleType: exampleType);
-      Navigator.pop(context);
-      fetchDataEduc();
-      AppSnackBar.snackBarSuccess(context, msg: "تمت عملية التعديل بنجاح");
-    } else {
-      Navigator.pop(context);
-      fetchDataEduc();
-      AppSnackBar.snackBarError(context,
-          msg: "الرجاء التأكد من جودة الصوت المختار");
-    }
   }
 
-  // * Add Educational Materials
-  Future<void> addEducationalMaterials(
-      {required String title,
-      required File audio,
-      required File image,
-      required String cardType,
-      required String educType,
-      required String exampleType,
-      required BuildContext context}) async {
-    DateTime timeSend = DateTime.now();
-    String cardID = const Uuid().v1();
-    String imageUrl = await StoregFileManagement()
-        .storageFileTOFirebase('materials/$cardType/$title/image', image);
-    String audioUrl = await StoregFileManagement()
-        .storageFileTOFirebase('materials/$cardType/$title/audio', audio);
+  // ? ************************ Speech to Text Google Clude Service **********************
 
-    _saveEducationalMaterialsToMrssaheSubcollection(
-        id: cardID,
-        title: title,
-        imageUrl: imageUrl,
-        audioUrl: audioUrl,
-        details: "details",
-        textSpeehcToText: content,
-        active: true,
-        timeSend: timeSend,
-        educType: educType,
-        lang: educaLangData,
-        exampleType: exampleType);
-    Navigator.pop(context);
-    fetchDataEduc();
-    AppSnackBar.snackBarSuccess(context, msg: "تمت عملية الحفظ بنجاح");
-  }
-
-  // * Delete Educational Materials
-  Future<void> deleteEducation({
-    required String educType,
-    required String exampleType,
-    required String image,
-    required String audio,
-    required String id,
-    required String title,
-  }) async {
-    await firestore
-        .collection(AppFirebaseKey.education)
-        .doc(educType)
-        .collection(AppFirebaseKey.lang)
-        .doc(educaLang)
-        .collection(AppFirebaseKey.example)
-        .doc(exampleType)
-        .collection(AppFirebaseKey.id)
-        .doc(id)
-        .delete();
-    StoregFileManagement().deleteFilefromFirebase(image);
-    StoregFileManagement().deleteFilefromFirebase(audio);
-    fetchDataEduc();
-  }
-
-  // * Speech to Text Google Clude Service
-  void transcribe(List<int> audio, BuildContext context) async {
+  Future<void> transcribe(List<int> audio, BuildContext context) async {
     try {
       dev.log("Speech to Text start");
       final serviceAccount =
@@ -361,7 +383,29 @@ class ControllerEducationData extends ChangeNotifier {
     }
   }
 
-  List<int> convertAudioToList(File audio) {
-    return audio.readAsBytesSync().toList();
+  // ? ************************ Delete Word Data **********************
+
+  // * Delete Word Materials
+  Future<void> deleteWord({
+    required String educType,
+    required String exampleType,
+    required String image,
+    required String audio,
+    required String id,
+    required String title,
+  }) async {
+    await firestore
+        .collection(AppFirebaseKey.education)
+        .doc(educType)
+        .collection(AppFirebaseKey.lang)
+        .doc(educaLang)
+        .collection(AppFirebaseKey.example)
+        .doc(exampleType)
+        .collection(AppFirebaseKey.id)
+        .doc(id)
+        .delete();
+    StoregFileManagement().deleteFilefromFirebase(image);
+    StoregFileManagement().deleteFilefromFirebase(audio);
+    fetchWordData();
   }
 }

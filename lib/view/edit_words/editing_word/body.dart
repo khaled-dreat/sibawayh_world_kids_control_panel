@@ -56,10 +56,10 @@ class _EditingWordState extends State<EditingWord> {
   void initState() {
     super.initState();
     Future.delayed(Duration.zero, () {
-      ControllerEducationData pEducMaterial =
-          Provider.of<ControllerEducationData>(context, listen: false);
+      ControllerWordManeg pEducMaterial =
+          Provider.of<ControllerWordManeg>(context, listen: false);
       pEducMaterial.changeEducaLang(widget.educLang);
-      pEducMaterial.getEducationalMaterialByID(
+      pEducMaterial.getWordByID(
           id: widget.id!,
           educType: widget.educType,
           exampleType: widget.exampleType);
@@ -74,8 +74,8 @@ class _EditingWordState extends State<EditingWord> {
 
   @override
   Widget build(BuildContext context) {
-    ControllerEducationData pEducMaterial =
-        Provider.of<ControllerEducationData>(context);
+    ControllerWordManeg pEducMaterial =
+        Provider.of<ControllerWordManeg>(context);
 
     AudioPlayer player = AudioPlayer();
     txtTitleController.text = pEducMaterial.title;
@@ -84,47 +84,39 @@ class _EditingWordState extends State<EditingWord> {
     return Scaffold(
       backgroundColor: Colors.white,
       body: SingleChildScrollView(
-        child: Container(
+        child: SizedBox(
             width: MediaQuery.sizeOf(context).width,
             height: MediaQuery.sizeOf(context).height,
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
+                20.verticalSpace,
                 // title
                 TxtTitle(
                     txtTitleFocusNode: txtTitleFocusNode,
                     txtTitleController: txtTitleController),
-                20.verticalSpace,
+                15.verticalSpace,
                 //  DropDown Select Lang
                 const DropDownSelectLang(),
-                20.verticalSpace,
-                // add img
-                InkWell(
-                  onTap: () {
-                    pickFile(fileType: FileType.image);
-                  },
-                  child: EditImg(
-                      isUplodeimage: isUplodeimage,
-                      imageToDisplay: imageToDisplay,
-                      pEducMaterial: pEducMaterial),
-                ),
-                20.verticalSpace,
-                // * Add, Play Audio
+                15.verticalSpace,
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
                     // add Audio
                     SizedBox(
-                        height: 70.h,
+                        height: 80.h,
                         width: 150.w,
                         child: InkWell(
                           onTap: () {
                             pickFile(fileType: FileType.audio);
                           },
                           child: Card(
-                            color: Colors.grey.shade100,
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(20)),
+                            color: Colors.green.shade100,
                             child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
                               children: [
                                 SvgPicture.asset(AppIcons.addSound,
                                     height: 35.h),
@@ -136,7 +128,7 @@ class _EditingWordState extends State<EditingWord> {
 
                     // play Audio
                     SizedBox(
-                        height: 70.h,
+                        height: 80.h,
                         width: 150.w,
                         child: InkWell(
                           onTap: () {
@@ -149,7 +141,9 @@ class _EditingWordState extends State<EditingWord> {
                             }
                           },
                           child: Card(
-                            color: Colors.grey.shade100,
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(20)),
+                            color: Colors.green.shade100,
                             child: Column(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
@@ -162,10 +156,23 @@ class _EditingWordState extends State<EditingWord> {
                         )),
                   ],
                 ),
-                // Button of cancel an accept
+                15.verticalSpace,
+
+                // add img
+                InkWell(
+                  onTap: () {
+                    pickFile(fileType: FileType.image);
+                  },
+                  child: EditImg(
+                      isUplodeimage: isUplodeimage,
+                      imageToDisplay: imageToDisplay,
+                      pEducMaterial: pEducMaterial),
+                ),
               ],
             )),
       ),
+      // Button of cancel an accept
+
       bottomNavigationBar: BottomAppBar(
           elevation: 20,
           child: Row(
@@ -195,7 +202,7 @@ class _EditingWordState extends State<EditingWord> {
                               });
 
                               if (audioToPlay != null) {}
-                              pEducMaterial.updateEducationalMaterial(
+                              pEducMaterial.updateWord(
                                 cardID: widget.id!,
                                 title: txtTitleController.text,
                                 audio: audioToPlay,

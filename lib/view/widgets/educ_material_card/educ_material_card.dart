@@ -30,10 +30,10 @@ class EducMaterialCard extends StatelessWidget {
                 children: [
                   IconButton(
                       onPressed: () {
-                        ControllerEducationData pEduca =
-                            Provider.of<ControllerEducationData>(context,
+                        ControllerWordManeg pEduca =
+                            Provider.of<ControllerWordManeg>(context,
                                 listen: false);
-                        pEduca.deleteEducation(
+                        pEduca.deleteWord(
                           audio: data![AppFirebaseKey.audio],
                           image: data![AppFirebaseKey.image],
                           title: data![AppFirebaseKey.title],

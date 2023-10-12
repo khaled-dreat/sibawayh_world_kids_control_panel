@@ -5,19 +5,23 @@ class CustomFloatingActionButton extends StatelessWidget {
     super.key,
     required this.educType,
     required this.exampleType,
+    required this.isconnect,
   });
   final String educType;
   final String exampleType;
+  final bool isconnect;
   @override
   Widget build(BuildContext context) {
     return FloatingActionButton.extended(
       onPressed: () {
-        AppRoutes.goMaterial(
-            context,
-            AddWord(
-              educType: educType,
-              exampleType: exampleType,
-            ));
+        isconnect
+            ? AppRoutes.goMaterial(
+                context,
+                AddWord(
+                  educType: educType,
+                  exampleType: exampleType,
+                ))
+            : AppToast.toast("الرجاء التأكد من حالة الاتصال بل انترنت");
       },
       backgroundColor: Colors.green,
       label: const Text("أضف عنصر جديد"),
