@@ -1,13 +1,13 @@
 part of '../../utils/import/app_import.dart';
 
-class ControllerWordManeg extends ChangeNotifier {
+class ControllerEducationManeg extends ChangeNotifier {
   final FirebaseFirestore firestore = FirebaseFirestore.instance;
   final FirebaseAuth auth = FirebaseAuth.instance;
   ModelEducation? education;
 
-// ? ************************ Get Word Material Data **********************
+// ? ************************ Get Education Material Data **********************
 
-  // * Get Word Material Data by ID
+  // * Get Education Material Data by ID
 
   bool imgLoading = false;
   void changeImgLodaing(bool value) {
@@ -26,7 +26,7 @@ class ControllerWordManeg extends ChangeNotifier {
     title = value;
   }
 
-  Future<void> getWordByID({
+  Future<void> getEducationByID({
     required String id,
     required String educType,
     required String exampleType,
@@ -39,7 +39,7 @@ class ControllerWordManeg extends ChangeNotifier {
             .doc(educaLang)
             .collection(AppFirebaseKey.example)
             .doc(exampleType)
-            .collection("id")
+            .collection(AppFirebaseKey.id)
             .doc(id)
             .get();
     if (educationalMaterialsData.data() != null) {
@@ -51,7 +51,7 @@ class ControllerWordManeg extends ChangeNotifier {
     }
   }
 
-// * Get All Word Materials
+// * Get All Education Materials
 
   bool isGetAllEducMatr = true;
   void changeIsGetAllEducMatr(bool value) {
@@ -59,10 +59,14 @@ class ControllerWordManeg extends ChangeNotifier {
     notifyListeners();
   }
 
-  List<ModelEducation> allWords = [];
+  List<ModelEducation> allEducation = [];
 
-  Future<void> getAllWord() async {
-    allWords = [];
+  Future<void> getAllEducation({
+    required String exampleType,
+  }) async {
+    dev.log("start");
+
+    allEducation = [];
     changeIsGetAllEducMatr(true);
     firestore
         .collection(AppFirebaseKey.education)
@@ -70,24 +74,25 @@ class ControllerWordManeg extends ChangeNotifier {
         .collection(AppFirebaseKey.lang)
         .doc(educaLang)
         .collection(AppFirebaseKey.example)
-        .doc(EducExamTypeEnum.word.title)
+        .doc(exampleType)
         .collection(AppFirebaseKey.id)
         .get()
         .then((value) {
       if (value.docs.isNotEmpty) {
         for (var document in value.docs) {
-          allWords.add(ModelEducation.fromMap(document.data()));
+          allEducation.add(ModelEducation.fromMap(document.data()));
           changeIsGetAllEducMatr(false);
         }
       } else {
         changeIsGetAllEducMatr(false);
       }
+      dev.log("end");
     });
   }
 
-// ? ************************ Save Word Data **********************
+// ? ************************ Save Education Data **********************
 
-  // * Save Word Data in Firestore
+  // * Save Education Data in Firestore
 
   String educaLangData = "";
   void changeEducaLangData(String value) {
@@ -99,7 +104,7 @@ class ControllerWordManeg extends ChangeNotifier {
     oldLangEduc = value;
   }
 
-  void _saveWordToMrssaheSubcollection({
+  void _saveEducationToMrssaheSubcollection({
     required String id,
     required String title,
     required String imageUrl,
@@ -137,9 +142,9 @@ class ControllerWordManeg extends ChangeNotifier {
         .set(education.toMap());
   }
 
-  // * Add Word Data
+  // * Add Education Data
 
-  Future<void> addWord(
+  Future<void> addEducation(
       {required String title,
       required File audio,
       required File image,
@@ -158,11 +163,11 @@ class ControllerWordManeg extends ChangeNotifier {
       await Future.delayed(
         Duration.zero,
         () {
-          transcribe(convertAudioToList(audio), context);
+          //  transcribe(convertAudioToList(audio), context);
         },
       );
       if (content.isNotEmpty) {
-        _saveWordToMrssaheSubcollection(
+        _saveEducationToMrssaheSubcollection(
             id: cardID,
             title: title,
             imageUrl: imageUrl,
@@ -178,7 +183,7 @@ class ControllerWordManeg extends ChangeNotifier {
           Duration.zero,
           () {
             Navigator.pop(context);
-            fetchWordData();
+            fetchEducationData(exampleType: exampleType);
             AppSnackBar.snackBarSuccess(context, msg: "تمت عملية الحفظ بنجاح");
           },
         );
@@ -187,7 +192,7 @@ class ControllerWordManeg extends ChangeNotifier {
           Duration.zero,
           () {
             Navigator.pop(context);
-            fetchWordData();
+            fetchEducationData(exampleType: exampleType);
             AppSnackBar.snackBarError(context,
                 msg: "الرجاء التأكد من جودة الصوت المختار");
           },
@@ -198,10 +203,12 @@ class ControllerWordManeg extends ChangeNotifier {
     }
   }
 
-  // ? ************************ Update Word Data **********************
+  // ? ************************ Update Education Data **********************
 
-  Future<void> fetchWordData() async {
-    getAllWord();
+  Future<void> fetchEducationData({
+    required String exampleType,
+  }) async {
+    await getAllEducation(exampleType: exampleType);
   }
 
   // * Use To Save The Text Return From  Google Clude
@@ -223,8 +230,8 @@ class ControllerWordManeg extends ChangeNotifier {
     return audio.readAsBytesSync().toList();
   }
 
-  // * Update Word Data in Firestore
-  void _updateWordInMrssaheSubcollection({
+  // * Update Education Data in Firestore
+  void _updateEducationInMrssaheSubcollection({
     required String id,
     required String title,
     required String imageUrl,
@@ -285,8 +292,8 @@ class ControllerWordManeg extends ChangeNotifier {
     }
   }
 
-// * Update Word Data
-  Future<void> updateWord(
+// * Update Education Data
+  Future<void> updateEducation(
       {required String title,
       required String cardID,
       required File? audio,
@@ -303,7 +310,7 @@ class ControllerWordManeg extends ChangeNotifier {
         audioUrl = education!.audio;
         content = education!.textSpeehcToText;
       } else {
-        await transcribe(convertAudioToList(audio), context);
+        //  await transcribe(convertAudioToList(audio), context);
         if (content.isNotEmpty) {
           audioUrl = await StoregFileManagement()
               .storageFileTOFirebase('materials/$cardType/$title/audio', audio);
@@ -314,7 +321,7 @@ class ControllerWordManeg extends ChangeNotifier {
           : await StoregFileManagement()
               .storageFileTOFirebase('materials/$cardType/$title/image', image);
       if (content.isNotEmpty) {
-        _updateWordInMrssaheSubcollection(
+        _updateEducationInMrssaheSubcollection(
             id: cardID,
             title: title,
             imageUrl: imageUrl,
@@ -331,7 +338,7 @@ class ControllerWordManeg extends ChangeNotifier {
           Duration.zero,
           () {
             Navigator.pop(context);
-            fetchWordData();
+            fetchEducationData(exampleType: exampleType);
             AppSnackBar.snackBarSuccess(context,
                 msg: "تمت عملية التعديل بنجاح");
           },
@@ -344,50 +351,39 @@ class ControllerWordManeg extends ChangeNotifier {
 
   // ? ************************ Speech to Text Google Clude Service **********************
 
-  Future<void> transcribe(List<int> audio, BuildContext context) async {
-    try {
-      dev.log("Speech to Text start");
-      final serviceAccount =
-          ServiceAccount.fromString(r'''{ "type": "service_account",
-  "project_id": "angelic-gift-398808",
-  "private_key_id": "44e3eddc0b16373f2564cff2b5741cba25722601",
-  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvAIBADANBgkqhkiG9w0BAQEFAASCBKYwggSiAgEAAoIBAQCKWU5t4jcObjAY\nrJskk8EvE7Q1AXy7wQw210oaYcbd3vmzjQL1TBWbaL1KllMzRfEZyMVIBPwKZ2CK\n0Wd7Xo2zEK6Vx/x//TT2IpVlpq7kxYpLCkfsKiNXkcQeGbm1WMPWgGHyabnN+tJf\nwx6489iwAOHwl1kC/zZgfkkOILfr+jr0pxRKwfrqXcmoujWsh/Fcc7frjU5LJn3M\nCw0DmRWVQF/6kDWu/vKCMcRFPbm6JToUJq6y9wHxHyLOLuDZK0OnjbGO/GHiQF0P\nltCTXOclFQOatjXIoJA+A731/HgsOdNBiqOPJx1AiQc2oJQ51OjR7Z1fCSdUFM0k\nTQOld191AgMBAAECggEADArO/ViR80MbE6K+lFX6HEdqSazZ9xvMHN/rdtVo8noM\noRjWl5RqUw8wXtQr5MwjOtvTdDve1mb+K8cja0UlL1912tq/+0IGgKAtAd6a3ZXm\nPjbkYMWgMuigugACPqs9zKd7Hxcd0bSR6Dz7KR0skNFa2U7LNCwTxx1m7YBikfsi\nrnF8tfnEvy+3pwV8WAB0ZYPC+0l/ST5BTbPfLDBWFlYIdEkmnpLuINti0ZORadJf\nC3XdJzdAOOrIdOTU0B0uR0A/Pr2vDwU9IeIKWOyU1jwWHWt/lcZLHzhZ36BX0+8G\nI1QLjdYFSWXOGgsvvAwtt66ewxPpGACrKzwAD3IrBwKBgQDAUn7k/Y4hHYeQ+fjl\nkA2TLgNB1eVUuKbGZ+WXNWfvMB8PMVb1A2HI6Rd6TUkeUUQ4rSNk7+fs+T0L0RPx\nHSuQkRpYWqTjYSA7nqratvrfr9rI24RkjrBEHSzdjHjgE75CwM/CKrn6DnDr5KQJ\nslGC+0691tgcESUHOT1C0w8uwwKBgQC4J/MiJ4HE+rPaXPu56LL8Dz4njERBV40h\n6IZx1MQb+dL+EE3JvJM8Uj3S0n0IfOGYSTI/JR5/+DgxE57Xuks1rrG0fAkl7kZt\nGRcIJlfaUe9tMCq/vArHhD4oDx9RoGYcME1uWxatPZQZ+xHM3oiL963/yiFf0Dg4\nFtqPmCtFZwKBgG6ghYGvIEyIMe0A/Vz/ie95bkI2iZ48QSKrrPNXsxtxMMyKcxyo\n/1yUR/7/6elYkceQQGXVYjF8BNOBRtlREDguX1sneOWafvIMiPcafiChhVY4f2Vg\ndqAXsDEYloc+lBjN1DQ6Y5QlLmtir8EsI5sWd+rXZKRwcD5BfK2tvnQFAoGAB+9w\nwqABL4O+DELFdhVY4ROnEf0xU796DWP/pxgL+0igluIM+AxwK8E/eL4pNRxsfCtr\nRt1KmykPAs5dod4dL4r/jU9q9X92+WyDWY6NapLtRj81GF35+O7x3rgIGXRX8g8C\nxyaVq5FjuFrhQXq1V5KspMEI/x/xzDjv4hAkjTECgYBJ0faXACD65vNRS4qVoNUi\nNw82I0SqjFoYU6IDKwoEltY/Y5DSe9NM2dH8eW2Rcm75xzpV3OB3Q1BNbl/OFT4E\nhpkHzfINQj/IWwsZSRQ/pzuMwd9Tzd7/xXImAepyKJ3r6iL6kiOQiG8NbgiGlHHf\nUMGauvK1KbFKRtKX01WkHQ==\n-----END PRIVATE KEY-----\n",
-  "client_email": "mervat@angelic-gift-398808.iam.gserviceaccount.com",
-  "client_id": "115138938632147223593",
-  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
-  "token_uri": "https://oauth2.googleapis.com/token",
-  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
-  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/mervat%40angelic-gift-398808.iam.gserviceaccount.com",
-  "universe_domain": "googleapis.com"}''');
-      final speechToText = SpeechToText.viaServiceAccount(serviceAccount);
-      final config = RecognitionConfig(
-          encoding: AudioEncoding.LINEAR16,
-          model: RecognitionModel.basic,
-          audioChannelCount: 2,
-          enableAutomaticPunctuation: true,
-          sampleRateHertz: 44100,
-          languageCode: 'ar');
+  // Future<void> transcribe(List<int> audio, BuildContext context) async {
+  //   try {
+  //     dev.log("Speech to Text start");
+  //     final serviceAccount =
+  //
+  //     final speechToText = SpeechToText.viaServiceAccount(serviceAccount);
+  //     final config = RecognitionConfig(
+  //         encoding: AudioEncoding.LINEAR16,
+  //         model: RecognitionModel.basic,
+  //         audioChannelCount: 2,
+  //         enableAutomaticPunctuation: true,
+  //         sampleRateHertz: 44100,
+  //         languageCode: 'ar');
+//
+  //     await speechToText.recognize(config, audio).then((value) {
+  //       dev.log("info ${value.results.toString()}");
+//
+  //       changeContent(value.results
+  //           .map((e) => e.alternatives.first.transcript)
+  //           .join('\n')
+  //           .replaceAll(".", ""));
+  //       dev.log(content);
+  //     }).whenComplete(() {});
+  //     dev.log("Speech to Text start");
+  //   } catch (e) {
+  //     dev.log("Error Speeth to text : $e");
+  //   }
+  // }
 
-      await speechToText.recognize(config, audio).then((value) {
-        dev.log("info ${value.results.toString()}");
-
-        changeContent(value.results
-            .map((e) => e.alternatives.first.transcript)
-            .join('\n')
-            .replaceAll(".", ""));
-        dev.log(content);
-      }).whenComplete(() {});
-      dev.log("Speech to Text start");
-    } catch (e) {
-      dev.log("Error Speeth to text : $e");
-    }
-  }
-
-  // ? ************************ Delete Word Data **********************
-
-  // * Delete Word Materials
-  Future<void> deleteWord({
+  // * Delete Education Materials
+  Future<void> deleteEducation({
     required String educType,
+    required String educaLang,
     required String exampleType,
     required String image,
     required String audio,
@@ -406,6 +402,6 @@ class ControllerWordManeg extends ChangeNotifier {
         .delete();
     StoregFileManagement().deleteFilefromFirebase(image);
     StoregFileManagement().deleteFilefromFirebase(audio);
-    fetchWordData();
+    fetchEducationData(exampleType: exampleType);
   }
 }

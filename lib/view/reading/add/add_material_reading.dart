@@ -1,20 +1,20 @@
 part of '../../../utils/import/app_import.dart';
 
-class AddWord extends StatefulWidget {
+class AddMaterialReading extends StatefulWidget {
   static const String nameRoute = "AddWord";
   final String educType;
   final String exampleType;
-  const AddWord({
+  const AddMaterialReading({
     Key? key,
     required this.educType,
     required this.exampleType,
   }) : super(key: key);
 
   @override
-  State<AddWord> createState() => _AddWordState();
+  State<AddMaterialReading> createState() => _AddMaterialReadingState();
 }
 
-class _AddWordState extends State<AddWord> {
+class _AddMaterialReadingState extends State<AddMaterialReading> {
   TextEditingController txtTitleController = TextEditingController();
   FocusNode txtTitleFocusNode = FocusNode();
 
@@ -56,8 +56,8 @@ class _AddWordState extends State<AddWord> {
 
   @override
   Widget build(BuildContext context) {
-    ControllerWordManeg pEducMaterial =
-        Provider.of<ControllerWordManeg>(context);
+    ControllerEducationManeg pEducMaterial =
+        Provider.of<ControllerEducationManeg>(context);
     AudioPlayer player = AudioPlayer();
 
     return Scaffold(
@@ -215,7 +215,7 @@ class _AddWordState extends State<AddWord> {
 
                                 pEducMaterial.transcribe(audioToText, context);
 
-                                pEducMaterial.addWord(
+                                pEducMaterial.addEducation(
                                   title: txtTitleController.text,
                                   audio: audioToPlay!,
                                   image: imageToDisplay!,

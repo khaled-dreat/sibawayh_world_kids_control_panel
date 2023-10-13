@@ -1,18 +1,18 @@
-part of '../../utils/import/app_import.dart';
+part of '../../../utils/import/app_import.dart';
 
-class EditWords extends StatefulWidget {
-  static const String nameRoute = "EditWords";
-  const EditWords({super.key});
+class Sentence extends StatefulWidget {
+  static const String nameRoute = "Sentence";
+  const Sentence({super.key});
 
   @override
-  State<EditWords> createState() => _EditWordsState();
+  State<Sentence> createState() => _SentenceState();
 }
 
-class _EditWordsState extends State<EditWords> {
+class _SentenceState extends State<Sentence> {
   TextEditingController txtSrhController = TextEditingController();
 
   int currentIndex = 0;
-  List<Widget> tabs = const [TabAr(), TabEn()];
+  List<Widget> tabs = const [TabArSentence(), TabEnSentence()];
   List<BottomNavigationBarItem> items = [
     BottomNavigationBarItem(
         icon: SvgPicture.asset(AppIcons.bottomNavBarWords, height: 28),
@@ -71,7 +71,7 @@ class _EditWordsState extends State<EditWords> {
       floatingActionButton: CustomFloatingActionButton(
         isconnect: pConnectivity.isconnect,
         educType: EducTypeEnum.reading.title,
-        exampleType: EducExamTypeEnum.word.title,
+        exampleType: EducExamTypeEnum.sentence.title,
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.startFloat,
     );

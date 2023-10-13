@@ -1,7 +1,7 @@
-part of '../../../utils/import/app_import.dart';
+part of '../../../../../utils/import/app_import.dart';
 
-class EnListViewBuilder extends StatelessWidget {
-  const EnListViewBuilder({super.key});
+class ArListViewBuilderSentence extends StatelessWidget {
+  const ArListViewBuilderSentence({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -11,7 +11,9 @@ class EnListViewBuilder extends StatelessWidget {
     AppConnectivityManager pConnectivity =
         Provider.of<AppConnectivityManager>(context);
     return StreamBuilder<QuerySnapshot>(
-        stream: pSrh.srhQuery(EducLangEnum.en.title),
+        stream: pSrh.srhQuery(
+            educaLang: EducLangEnum.ar.title,
+            example: EducExamTypeEnum.sentence.title),
         builder: (context, snapshot) {
           if (snapshot.hasError) {
             return ErrorText(title: AppLangKey.errorNoData);
@@ -34,11 +36,11 @@ class EnListViewBuilder extends StatelessWidget {
                   pConnectivity.isconnect
                       ? AppRoutes.goMaterial(
                           context,
-                          EditingWord(
-                            educLang: EducLangEnum.en.title,
+                          EditMaterialReading(
+                            educLang: EducLangEnum.ar.title,
                             id: data[AppFirebaseKey.id],
                             educType: EducTypeEnum.reading.title,
-                            exampleType: EducExamTypeEnum.word.title,
+                            exampleType: EducExamTypeEnum.sentence.title,
                           ))
                       : AppToast.toast(
                           "الرجاء التأكد من حالة الاتصال بل انترنت");

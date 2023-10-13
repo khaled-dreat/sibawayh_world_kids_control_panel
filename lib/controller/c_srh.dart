@@ -10,14 +10,15 @@ class ControllerSrh extends ChangeNotifier {
   }
 
   // *  Search Query
-  Stream<QuerySnapshot<Object?>> srhQuery(String educaLang) {
+  Stream<QuerySnapshot<Object?>> srhQuery(
+      {required String educaLang, required String example}) {
     Stream<QuerySnapshot> usersStream = firestore
         .collection(AppFirebaseKey.education)
         .doc(EducTypeEnum.reading.title)
         .collection(AppFirebaseKey.lang)
         .doc(educaLang)
         .collection(AppFirebaseKey.example)
-        .doc(EducExamTypeEnum.word.title)
+        .doc(example)
         .collection(AppFirebaseKey.id)
         .orderBy(AppFirebaseKey.title)
         .startAt([srhValue]).endAt(["$srhValue\uf8ff"]).snapshots();

@@ -9,7 +9,8 @@ class DropDownSelectLang extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    ControllerWordManeg pEduc = Provider.of<ControllerWordManeg>(context);
+    ControllerEducationManeg pEduc =
+        Provider.of<ControllerEducationManeg>(context);
     return Container(
       width: 1.sw,
       height: 60.h,

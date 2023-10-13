@@ -10,7 +10,7 @@ class EditImg extends StatelessWidget {
 
   final bool isUplodeimage;
   final File? imageToDisplay;
-  final ControllerWordManeg pEducMaterial;
+  final ControllerEducationManeg pEducMaterial;
 
   @override
   Widget build(BuildContext context) {

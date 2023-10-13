@@ -17,7 +17,7 @@ class CustomFloatingActionButton extends StatelessWidget {
         isconnect
             ? AppRoutes.goMaterial(
                 context,
-                AddWord(
+                AddMaterialReading(
                   educType: educType,
                   exampleType: exampleType,
                 ))

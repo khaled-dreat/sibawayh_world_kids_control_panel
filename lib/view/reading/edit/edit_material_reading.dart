@@ -1,12 +1,12 @@
 part of '../../../utils/import/app_import.dart';
 
-class EditingWord extends StatefulWidget {
+class EditMaterialReading extends StatefulWidget {
   static const String nameRoute = "EditingWord";
   final String? id;
   final String educType;
   final String exampleType;
   final String educLang;
-  const EditingWord({
+  const EditMaterialReading({
     Key? key,
     this.id,
     required this.educType,
@@ -15,10 +15,10 @@ class EditingWord extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  State<EditingWord> createState() => _EditingWordState();
+  State<EditMaterialReading> createState() => _EditMaterialReadingState();
 }
 
-class _EditingWordState extends State<EditingWord> {
+class _EditMaterialReadingState extends State<EditMaterialReading> {
   FilePickerResult? result;
   String? fileName;
   PlatformFile? pickedfile;
@@ -56,10 +56,10 @@ class _EditingWordState extends State<EditingWord> {
   void initState() {
     super.initState();
     Future.delayed(Duration.zero, () {
-      ControllerWordManeg pEducMaterial =
-          Provider.of<ControllerWordManeg>(context, listen: false);
+      ControllerEducationManeg pEducMaterial =
+          Provider.of<ControllerEducationManeg>(context, listen: false);
       pEducMaterial.changeEducaLang(widget.educLang);
-      pEducMaterial.getWordByID(
+      pEducMaterial.getEducationByID(
           id: widget.id!,
           educType: widget.educType,
           exampleType: widget.exampleType);
@@ -74,8 +74,8 @@ class _EditingWordState extends State<EditingWord> {
 
   @override
   Widget build(BuildContext context) {
-    ControllerWordManeg pEducMaterial =
-        Provider.of<ControllerWordManeg>(context);
+    ControllerEducationManeg pEducMaterial =
+        Provider.of<ControllerEducationManeg>(context);
 
     AudioPlayer player = AudioPlayer();
     txtTitleController.text = pEducMaterial.title;
@@ -202,7 +202,7 @@ class _EditingWordState extends State<EditingWord> {
                               });
 
                               if (audioToPlay != null) {}
-                              pEducMaterial.updateWord(
+                              pEducMaterial.updateEducation(
                                 cardID: widget.id!,
                                 title: txtTitleController.text,
                                 audio: audioToPlay,

@@ -7,14 +7,15 @@ class AppRoutes {
     CurriculumModification.nameRoute: (context) =>
         const CurriculumModification(),
     EditIn.nameRoute: (context) => const EditIn(),
-    EditWords.nameRoute: (context) => const EditWords(),
+    Words.nameRoute: (context) => const Words(),
     PageSignIn.nameRoute: (context) => const PageSignIn(),
     PageForgotPass.nameRoute: (context) => const PageForgotPass(),
     PageRegister.nameRoute: (context) => const PageRegister(),
     PageSplash.nameRoute: (context) => const PageSplash(),
     PageSelectedLang.nameRoute: (context) => const PageSelectedLang(),
     Wrapper.nameRoute: (context) => const Wrapper(),
-    EditLetters.nameRoute: (context) => const EditLetters(),
+    Letters.nameRoute: (context) => const Letters(),
+    Sentence.nameRoute: (context) => const Sentence(),
   };
 
   // * inti Route

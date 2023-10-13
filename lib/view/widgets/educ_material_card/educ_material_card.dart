@@ -30,10 +30,11 @@ class EducMaterialCard extends StatelessWidget {
                 children: [
                   IconButton(
                       onPressed: () {
-                        ControllerWordManeg pEduca =
-                            Provider.of<ControllerWordManeg>(context,
+                        ControllerEducationManeg pLetters =
+                            Provider.of<ControllerEducationManeg>(context,
                                 listen: false);
-                        pEduca.deleteWord(
+                        pLetters.deleteEducation(
+                          educaLang: "ar",
                           audio: data![AppFirebaseKey.audio],
                           image: data![AppFirebaseKey.image],
                           title: data![AppFirebaseKey.title],
@@ -43,6 +44,8 @@ class EducMaterialCard extends StatelessWidget {
                         );
                         AppSnackBar.snackBarSuccess(context,
                             msg: "تمت عملية الحذف بنجاح");
+                        pLetters.getAllEducation(
+                            exampleType: EducExamTypeEnum.letter.title);
                       },
                       icon: Icon(
                         Icons.delete,

@@ -16,7 +16,7 @@ class CurriculumModification extends StatelessWidget {
             Row(mainAxisAlignment: MainAxisAlignment.spaceAround, children: [
               CustomCard(
                 onTap: () {
-                  AppRoutes.go(context, EditWords.nameRoute);
+                  AppRoutes.go(context, Words.nameRoute);
                 },
                 icon: AppIcons.editWords,
                 title: "تعديل على الحروف",
@@ -24,7 +24,7 @@ class CurriculumModification extends StatelessWidget {
               CustomCard(
                 icon: AppIcons.editLetters,
                 title: "تعديل على الكلمات",
-                onTap: () => AppRoutes.go(context, EditLetters.nameRoute),
+                onTap: () => AppRoutes.go(context, Letters.nameRoute),
               ),
             ]),
             20.verticalSpace,
@@ -32,6 +32,7 @@ class CurriculumModification extends StatelessWidget {
               CustomCard(
                 icon: AppIcons.editSentence,
                 title: "تعديل على الجمال",
+                onTap: () => AppRoutes.go(context, Sentence.nameRoute),
               ),
               SizedBox(
                 height: 150.h,
